@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "NAZc33m7a/hrNwwl5KohwirQN1g9muEAmSg1qr/W1NfAdeDOgqB+lSXahEURuEsS3ak0K7bXYvOEEeWrf3e8YA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\martyr\\Desktop\\Travail\\A2 - info\\Pb scientifique info\\Probleme_Scientifique_Informatique\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\martyr\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.13\\microsoft.netcore.app.host.win-x64.3.1.13.nupkg.sha512"
+  ],
+  "logs": []
+}
