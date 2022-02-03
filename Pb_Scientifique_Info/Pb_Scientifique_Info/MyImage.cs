@@ -38,12 +38,22 @@ namespace Pb_Scientifique_Info
 
         public int Convert_Endian_To_Int(byte[] tab)
         {
-            return 0;
+            double res = 0;
+            for (int i=0; i<tab.Length; i++)
+            {
+                res += Math.Pow(tab[i], i);
+            }
+            return (int)res;
         }
 
         public byte[] Convert_Int_To_Endian(int val)
         {
-            return null;
+            byte[] tab = new byte[4];
+            tab[3] = (byte)(val % Math.Pow(256, 3));
+            tab[2] = (byte)(val % Math.Pow(256, 2));
+            tab[1] = (byte)(val % Math.Pow(256, 1));
+            tab[0] = (byte)(val % Math.Pow(256, 0));
+            return tab;
         }
     }
 }
