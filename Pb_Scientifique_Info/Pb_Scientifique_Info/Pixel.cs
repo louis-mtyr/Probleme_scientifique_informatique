@@ -6,7 +6,7 @@ namespace Pb_Scientifique_Info
 {
     class Pixel
     {
-        private byte r;
+        private byte r;     //un pixel est un mélange de red green et blue
         private byte g;
         private byte b;
 
