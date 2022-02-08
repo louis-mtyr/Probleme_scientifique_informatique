@@ -71,25 +71,25 @@ namespace Pb_Scientifique_Info
         {
             byte[] tab = File.ReadAllBytes(myfile);
             this.typeImage = "Pas BitMap";
-            if (tab[0] == (byte)66) if (tab[1] == (byte)77) this.typeImage = "BitMap";
+            if (tab[0] == (byte)66) if (tab[1] == (byte)77) this.typeImage = "BitMap";    //si les premiers nombres du header sont 66 et 77, alors c'est du .BMP
 
-            byte[] tailleFichierEndian = new byte[4];
+            byte[] tailleFichierEndian = new byte[4];                               //calcul de la taille totale du fichier (image + header)
             for (int i = 2; i < 6; i++) tailleFichierEndian[i-2] = tab[i];
             this.tailleFichier = Convert_Endian_To_Int(tailleFichierEndian);
 
-            byte[] tailleOffsetEndian = new byte[4];
+            byte[] tailleOffsetEndian = new byte[4];                                 //taille du header info
             for (int i = 14; i < 18; i++) tailleOffsetEndian[i - 14] = tab[i];
             this.tailleOffset = Convert_Endian_To_Int(tailleOffsetEndian);
 
-            byte[] hauteurImageEndian = new byte[4];
-            for (int i = 18; i < 22; i++) hauteurImageEndian[i - 18] = tab[i];
-            this.hauteurImage = Convert_Endian_To_Int(hauteurImageEndian);
-
-            byte[] largeurImageEndian = new byte[4];
-            for (int i = 22; i < 26; i++) largeurImageEndian[i - 22] = tab[i];
+            byte[] largeurImageEndian = new byte[4];                                //taille de la largeur
+            for (int i = 18; i < 22; i++) largeurImageEndian[i - 18] = tab[i];
             this.largeurImage = Convert_Endian_To_Int(largeurImageEndian);
 
-            byte[] nbBitsCouleurEndian = new byte[2];
+            byte[] hauteurImageEndian = new byte[4];                                    //calcul taille de la hauteur
+            for (int i = 22; i < 26; i++) hauteurImageEndian[i - 22] = tab[i];
+            this.hauteurImage = Convert_Endian_To_Int(hauteurImageEndian);
+
+            byte[] nbBitsCouleurEndian = new byte[2];                               //profondeur de codage de la couleur
             for (int i = 28; i < 30; i++) nbBitsCouleurEndian[i - 28] = tab[i];
             this.nbBitsCouleur = Convert_Endian_To_Int(nbBitsCouleurEndian);
 
