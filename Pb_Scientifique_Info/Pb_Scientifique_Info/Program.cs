@@ -5,7 +5,7 @@ namespace Pb_Scientifique_Info
 {
     class Program
     {
-        static public void NoirEtBlanc(MyImage image)
+        /*static public void NoirEtBlanc(MyImage image)
         {
             for (int i=0; i<image.Image.Length; i+=3)
             {
@@ -23,11 +23,27 @@ namespace Pb_Scientifique_Info
                 image.Image[i + 1] = Convert.ToByte(255 - (int)image.Image[i+1]);
                 image.Image[i + 2] = Convert.ToByte(255 - (int)image.Image[i+2]);
             }
-        }
+        }*/
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("Test001.bmp");
+            MyImage test = new MyImage("coco.bmp");
+            Console.WriteLine("type d'image : " + test.TypeImage);
+            Console.WriteLine("taille du fichier : " + test.TailleFichier);
+            Console.WriteLine("taille offset : " + test.TailleOffset);
+            Console.WriteLine("hauteur de l'image : " + test.HauteurImage);
+            Console.WriteLine("largeur de l'image : " + test.LargeurImage);
+            Console.WriteLine("nombre de bits couleur : " + test.NbBitsCouleur);
+            /*for (int i=0; i<test.Image.Length; i++)
+            {
+                if ((i % (test.LargeurImage * 3) == 0) && i!=0) Console.WriteLine();
+                Console.Write(test.Image[i] + " ");
+            }*/
+            test.From_Image_To_File("testingTD2.bmp");
+            Console.WriteLine();
+            Console.WriteLine();
+            /*Process.Start("testingTD2.bmp");
+            Inverse(test);
             Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);
@@ -39,22 +55,6 @@ namespace Pb_Scientifique_Info
                 if ((i % (test.LargeurImage * 3) == 0) && i!=0) Console.WriteLine();
                 Console.Write(test.Image[i] + " ");
             }
-            test.From_Image_To_File("testingTD2.bmp");
-            Console.WriteLine();
-            Console.WriteLine();
-            //Process.Start("testingTD2.bmp");
-            Inverse(test);
-            /*Console.WriteLine("type d'image : " + test.TypeImage);
-            Console.WriteLine("taille du fichier : " + test.TailleFichier);
-            Console.WriteLine("taille offset : " + test.TailleOffset);
-            Console.WriteLine("hauteur de l'image : " + test.HauteurImage);
-            Console.WriteLine("largeur de l'image : " + test.LargeurImage);
-            Console.WriteLine("nombre de bits couleur : " + test.NbBitsCouleur);
-            for (int i=0; i<test.Image.Length; i++)
-            {
-                if ((i % (test.LargeurImage * 3) == 0) && i!=0) Console.WriteLine();
-                Console.Write(test.Image[i] + " ");
-            }*/
             Console.WriteLine("Header :");
             for (int i = 0; i < 14; i++) Console.Write(test.Image[i] + " ");
             Console.WriteLine("\n\nHeader Info :");
@@ -71,7 +71,7 @@ namespace Pb_Scientifique_Info
             for (int i = 0; i < 4; i++)
             {
                 Console.Write(test.Convert_Int_To_Endian(800)[i] + " ");
-            }
+            }*/
         }
     }
 }

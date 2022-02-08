@@ -14,8 +14,8 @@ namespace Pb_Scientifique_Info
         private int hauteurImage;
         private int largeurImage;
         private int nbBitsCouleur;
-        private byte[] image;
-        private byte[] fichierComplet;
+        private Pixel[] image;
+        //private byte[] fichierComplet;
 
         public string Myfile
         {
@@ -54,18 +54,19 @@ namespace Pb_Scientifique_Info
             get { return this.nbBitsCouleur; }
         }
 
-        public byte[] Image
+        public Pixel[] Image
         {
             get { return this.image; }
             set { this.image = value; }
         }
 
-        public byte[] FichierComplet
+        /*public byte[] FichierComplet
         {
             get { return this.fichierComplet; }
-        }
+            set { this.fichierComplet = value; }
+        }*/
 
-        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, byte[] image, byte[] fichierComplet)
+        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[] image, byte[] fichierComplet)
         {
             this.typeImage = typeImage;
             this.tailleFichier = tailleFichier;
@@ -74,7 +75,7 @@ namespace Pb_Scientifique_Info
             this.largeurImage = largeurImage;
             this.nbBitsCouleur = nbBitsCouleur;
             this.image = image;
-            this.fichierComplet = fichierComplet;
+            //this.fichierComplet = fichierComplet;
         }
 
         public MyImage(string myfile)
@@ -103,16 +104,24 @@ namespace Pb_Scientifique_Info
             for (int i = 28; i < 30; i++) nbBitsCouleurEndian[i - 28] = tab[i];
             this.nbBitsCouleur = Convert_Endian_To_Int(nbBitsCouleurEndian);
 
-            byte[] limage = new byte[hauteurImage * largeurImage * 3];
-            for (int i = 54; i < tab.Length; i++) limage[i - 54] = tab[i];
+            Pixel[] limage = new Pixel[hauteurImage * largeurImage];
+            int k = 0;
+            for (int i = 54; i < tab.Length; i+=3)
+            {
+                limage[k] = new Pixel(0, 0, 0);
+                limage[k].R = tab[i];
+                limage[k].G = tab[i + 1];
+                limage[k].B = tab[i + 2];
+                k++;
+            }
             this.image = limage;
 
-            this.fichierComplet = tab;
+            //this.fichierComplet = tab;
         }
 
         public void From_Image_To_File(string file)
         {
-            byte[] nouveauFichier = new byte[this.tailleFichier];
+            byte[] nouveauFichier = new byte[this.tailleFichier]; 
             nouveauFichier[0] = Convert.ToByte(66);
             nouveauFichier[1] = Convert.ToByte(77);
             byte[] tailleFichierEndian = Convert_Int_To_Endian(this.tailleFichier);
@@ -120,15 +129,22 @@ namespace Pb_Scientifique_Info
             for (int i = 6; i < 14; i++) nouveauFichier[i] = Convert.ToByte(0);
             nouveauFichier[10] = Convert.ToByte(54);
             for (int i = 14; i < 18; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.tailleOffset)[i - 14];
-            for (int i = 18; i < 22; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.hauteurImage)[i - 18];
-            for (int i = 22; i < 26; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.largeurImage)[i - 22];
+            for (int i = 18; i < 22; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.largeurImage)[i - 18];
+            for (int i = 22; i < 26; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.hauteurImage)[i - 22];
             nouveauFichier[26] = Convert.ToByte(1);
             nouveauFichier[27] = Convert.ToByte(0);
             for (int i = 28; i < 30; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.nbBitsCouleur)[i - 28];
             for (int i = 30; i < 34; i++) nouveauFichier[i] = Convert.ToByte(0);
             for (int i = 34; i < 38; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.hauteurImage * this.largeurImage * 3)[i - 34];
-            for (int i = 38; i < 54; i++) nouveauFichier[i] = Convert.ToByte(0);
-            for (int i = 54; i < nouveauFichier.Length; i++) nouveauFichier[i] = this.Image[i - 54];
+            for (int i = 38; i < 54; i++) nouveauFichier[i] = Convert.ToByte(0); //jusque là c'est pour recopier header + header info
+            int k = 0;
+            for (int i = 54; i < nouveauFichier.Length-2; i+=3)
+            {
+                nouveauFichier[i] = this.image[k].R;
+                nouveauFichier[i+1] = this.image[k].G;
+                nouveauFichier[i+2] = this.image[k].B;
+                k++;
+            }
             File.WriteAllBytes(file, nouveauFichier);
         }
 
