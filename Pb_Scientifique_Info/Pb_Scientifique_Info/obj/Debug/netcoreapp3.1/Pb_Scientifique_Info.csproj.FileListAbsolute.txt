@@ -1,0 +1,13 @@
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\bin\Debug\netcoreapp3.1\Pb_Scientifique_Info.exe
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\bin\Debug\netcoreapp3.1\Pb_Scientifique_Info.deps.json
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\bin\Debug\netcoreapp3.1\Pb_Scientifique_Info.runtimeconfig.json
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\bin\Debug\netcoreapp3.1\Pb_Scientifique_Info.runtimeconfig.dev.json
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\bin\Debug\netcoreapp3.1\Pb_Scientifique_Info.dll
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\bin\Debug\netcoreapp3.1\Pb_Scientifique_Info.pdb
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\obj\Debug\netcoreapp3.1\Pb_Scientifique_Info.csprojAssemblyReference.cache
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\obj\Debug\netcoreapp3.1\Pb_Scientifique_Info.AssemblyInfoInputs.cache
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\obj\Debug\netcoreapp3.1\Pb_Scientifique_Info.AssemblyInfo.cs
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\obj\Debug\netcoreapp3.1\Pb_Scientifique_Info.csproj.CoreCompileInputs.cache
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\obj\Debug\netcoreapp3.1\Pb_Scientifique_Info.dll
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\obj\Debug\netcoreapp3.1\Pb_Scientifique_Info.pdb
+C:\Users\Louis\Desktop\travail\A2 - Info\Problème scientifique informatique\Projet git\Pb_Scientifique_Info\Pb_Scientifique_Info\obj\Debug\netcoreapp3.1\Pb_Scientifique_Info.genruntimeconfig.cache
