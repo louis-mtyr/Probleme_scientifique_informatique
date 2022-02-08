@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {}
+    "C:\\Users\\meric\\OneDrive\\Bureau\\ESILV A2\\S2\\Pb_Scientifique_Informatique\\Pb_Scientifique_Projet\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {
+    "C:\\Users\\meric\\OneDrive\\Bureau\\ESILV A2\\S2\\Pb_Scientifique_Informatique\\Pb_Scientifique_Projet\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
+        "projectUniqueName": "C:\\Users\\meric\\OneDrive\\Bureau\\ESILV A2\\S2\\Pb_Scientifique_Informatique\\Pb_Scientifique_Projet\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
         "projectName": "Pb_Scientifique_Info",
-        "projectPath": "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
-        "packagesPath": "C:\\Users\\Louis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\obj\\",
+        "projectPath": "C:\\Users\\meric\\OneDrive\\Bureau\\ESILV A2\\S2\\Pb_Scientifique_Informatique\\Pb_Scientifique_Projet\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
+        "packagesPath": "C:\\Users\\meric\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\meric\\OneDrive\\Bureau\\ESILV A2\\S2\\Pb_Scientifique_Informatique\\Pb_Scientifique_Projet\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Louis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\meric\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -54,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -92,11 +92,11 @@ namespace Pb_Scientifique_Info
             for (int i = 14; i < 18; i++) tailleOffsetEndian[i - 14] = tab[i];
             this.tailleOffset = Convert_Endian_To_Int(tailleOffsetEndian);
 
-            byte[] largeurImageEndian = new byte[4];                                //taille de la largeur
+            byte[] largeurImageEndian = new byte[4];                                //taille de la largeur de l'image
             for (int i = 18; i < 22; i++) largeurImageEndian[i - 18] = tab[i];
             this.largeurImage = Convert_Endian_To_Int(largeurImageEndian);
 
-            byte[] hauteurImageEndian = new byte[4];                                    //calcul taille de la hauteur
+            byte[] hauteurImageEndian = new byte[4];                                    //calcul taille de la hauteur de l'image
             for (int i = 22; i < 26; i++) hauteurImageEndian[i - 22] = tab[i];
             this.hauteurImage = Convert_Endian_To_Int(hauteurImageEndian);
 
@@ -104,7 +104,7 @@ namespace Pb_Scientifique_Info
             for (int i = 28; i < 30; i++) nbBitsCouleurEndian[i - 28] = tab[i];
             this.nbBitsCouleur = Convert_Endian_To_Int(nbBitsCouleurEndian);
 
-            Pixel[] limage = new Pixel[hauteurImage * largeurImage];
+            Pixel[] limage = new Pixel[hauteurImage * largeurImage];            //remplissage de l'attribut du tableau de pixel
             int k = 0;
             for (int i = 54; i < tab.Length; i+=3)
             {
@@ -121,7 +121,7 @@ namespace Pb_Scientifique_Info
 
         public void From_Image_To_File(string file)
         {
-            byte[] nouveauFichier = new byte[this.tailleFichier]; 
+            byte[] nouveauFichier = new byte[this.tailleFichier];           //début recopiage header + header info
             nouveauFichier[0] = Convert.ToByte(66);
             nouveauFichier[1] = Convert.ToByte(77);
             byte[] tailleFichierEndian = Convert_Int_To_Endian(this.tailleFichier);
@@ -136,7 +136,7 @@ namespace Pb_Scientifique_Info
             for (int i = 28; i < 30; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.nbBitsCouleur)[i - 28];
             for (int i = 30; i < 34; i++) nouveauFichier[i] = Convert.ToByte(0);
             for (int i = 34; i < 38; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.hauteurImage * this.largeurImage * 3)[i - 34];
-            for (int i = 38; i < 54; i++) nouveauFichier[i] = Convert.ToByte(0); //jusque là c'est pour recopier header + header info
+            for (int i = 38; i < 54; i++) nouveauFichier[i] = Convert.ToByte(0); //fin recopiage header + header info
             int k = 0;
             for (int i = 54; i < nouveauFichier.Length-2; i+=3)
             {
@@ -148,7 +148,7 @@ namespace Pb_Scientifique_Info
             File.WriteAllBytes(file, nouveauFichier);
         }
 
-        public int Convert_Endian_To_Int(byte[] tab)
+        public int Convert_Endian_To_Int(byte[] tab)        //Convertir du base 256 little endian en base 10
         {
             double res = 0;
             for (int i=0; i<tab.Length; i++)
@@ -158,7 +158,7 @@ namespace Pb_Scientifique_Info
             return (int)res;
         }
 
-        public byte[] Convert_Int_To_Endian(int val)
+        public byte[] Convert_Int_To_Endian(int val)        //Convertir du base 10 en base 256 en little endian
         {
             byte[] tab = new byte[4];
             if (val > Math.Pow(256, 3))
