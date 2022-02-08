@@ -7,7 +7,6 @@ namespace Pb_Scientifique_Info
         static void Main(string[] args)
         {
             //test
-            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("help");
             //test
         }
