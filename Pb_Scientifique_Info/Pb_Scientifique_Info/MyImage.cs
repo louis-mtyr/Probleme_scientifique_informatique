@@ -106,16 +106,16 @@ namespace Pb_Scientifique_Info
 
             Pixel[] limage = new Pixel[hauteurImage * largeurImage];            //remplissage de l'attribut du tableau de pixel
             int k = 0;
-            for (int i = 54; i < tab.Length; i+=3)
+            for (int i = 54; i < tab.Length-2; i+=3)
             {
                 limage[k] = new Pixel(0, 0, 0);
-                limage[k].R = tab[i];
+                limage[k].B = tab[i];
                 limage[k].G = tab[i + 1];
-                limage[k].B = tab[i + 2];
+                limage[k].R = tab[i + 2];
                 k++;
             }
             this.image = limage;
-
+            this.myfile = myfile;
             //this.fichierComplet = tab;
         }
 
@@ -140,9 +140,9 @@ namespace Pb_Scientifique_Info
             int k = 0;
             for (int i = 54; i < nouveauFichier.Length-2; i+=3)
             {
-                nouveauFichier[i] = this.image[k].R;
+                nouveauFichier[i] = this.image[k].B;
                 nouveauFichier[i+1] = this.image[k].G;
-                nouveauFichier[i+2] = this.image[k].B;
+                nouveauFichier[i+2] = this.image[k].R;
                 k++;
             }
             File.WriteAllBytes(file, nouveauFichier);

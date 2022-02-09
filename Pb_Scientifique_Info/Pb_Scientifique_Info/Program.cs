@@ -13,24 +13,28 @@ namespace Pb_Scientifique_Info
 {
     class Program
     {
-        static public void NoirEtBlanc(MyImage image)
+        static public MyImage NoirEtBlanc(MyImage image)
         {
+            MyImage nouvelleImage = new MyImage(image.Myfile);
             for (int i=0; i<image.Image.Length; i++)
             {
-                image.Image[i].R = (byte)(255 - image.Image[i].R);
-                image.Image[i].G = (byte)(255 - image.Image[i].R);
-                image.Image[i].B = (byte)(255 - image.Image[i].R);
+                nouvelleImage.Image[i].R = (byte)(image.Image[i].B);
+                nouvelleImage.Image[i].G = (byte)(image.Image[i].B);
+                nouvelleImage.Image[i].B = (byte)(image.Image[i].B);
             }
+            return nouvelleImage;
         }
 
-        static public void Inverse(MyImage image)
+        static public MyImage Inverse(MyImage image)
         {
+            MyImage nouvelleImage = new MyImage(image.Myfile);
             for (int i = 0; i < image.Image.Length; i++)
             {
-                image.Image[i].R = (byte)(255 - image.Image[i].R);
-                image.Image[i].G = (byte)(255 - image.Image[i].G);
-                image.Image[i].B = (byte)(255 - image.Image[i].B);
+                nouvelleImage.Image[i].R = (byte)(255 - image.Image[i].R);
+                nouvelleImage.Image[i].G = (byte)(255 - image.Image[i].G);
+                nouvelleImage.Image[i].B = (byte)(255 - image.Image[i].B);
             }
+            return nouvelleImage;
         }
 
         static void Main(string[] args)
@@ -51,10 +55,10 @@ namespace Pb_Scientifique_Info
             Console.WriteLine();
             Console.WriteLine();
             //Process.Start("testingTD2.bmp");
-            NoirEtBlanc(test);
-            test.From_Image_To_File("testingTD2_NoirEtBlanc.bmp");
-            Inverse(test);
-            test.From_Image_To_File("testingTD2Inverse.bmp");
+            MyImage testNoirEtBlanc = NoirEtBlanc(test);
+            testNoirEtBlanc.From_Image_To_File("testingTD2_NoirEtBlanc.bmp");
+            MyImage testInverse = Inverse(test);
+            testInverse.From_Image_To_File("testingTD2Inverse.bmp");
             /*Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);
