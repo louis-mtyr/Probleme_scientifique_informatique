@@ -18,7 +18,7 @@ namespace Pb_Scientifique_Info
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("test.bmp");
+            MyImage test = new MyImage("coco.bmp");
             Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);
