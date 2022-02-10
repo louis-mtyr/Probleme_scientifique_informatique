@@ -150,31 +150,34 @@ namespace Pb_Scientifique_Info
 
         public int Convert_Endian_To_Int(byte[] tab)        //Convertir du base 256 little endian en base 10
         {
-            double res = 0;
+            int res = 0;
             for (int i=0; i<tab.Length; i++)
             {
-                res += tab[i]*Math.Pow(256, i);
+                if (i == 0) res += tab[i];
+                if (i == 1) res += tab[i] * 256;
+                if (i == 2) res += tab[i] * 256 * 256;
+                if (i == 3) res += tab[i] * 256 * 256 * 256;
             }
-            return (int)res;
+            return res;
         }
 
         public byte[] Convert_Int_To_Endian(int val)        //Convertir du base 10 en base 256 en little endian
         {
             byte[] tab = new byte[4];
-            if (val > Math.Pow(256, 3))
+            if (val > (256*256*256))
             {
-                tab[3] = Convert.ToByte(val / Math.Pow(256, 3));
-                val = val % (int)Math.Pow(256, 3);
+                tab[3] = Convert.ToByte(val / 256*256*256);
+                val = val % (256*256*256);
             }
-            if (val > Math.Pow(256, 2))
+            if (val > (256*256))
             {
-                tab[2] = Convert.ToByte(val / Math.Pow(256, 2));
-                val = val % (int)Math.Pow(256, 2);
+                tab[2] = Convert.ToByte(val / (256*256));
+                val = val % (256*256);
             }
-            if (val > Math.Pow(256, 1))
+            if (val > 256)
             {
-                tab[1] = Convert.ToByte(val / Math.Pow(256, 1));
-                val = val % (int)Math.Pow(256, 1);
+                tab[1] = Convert.ToByte(val / 256);
+                val = val % 256;
             }
             if (val >= 0) tab[0] = Convert.ToByte(val);
             return tab;
@@ -203,6 +206,22 @@ namespace Pb_Scientifique_Info
             return nouvelleImage;
         }
 
+        public MyImage Miroir()
+        {
+            MyImage nouvelleImage = new MyImage(this.myfile);
+            int k = 1;
+            for (int i=0; i<this.image.Length; i+=this.largeurImage)
+            {
+                for (int j=i; j<this.largeurImage+i; j++)
+                {
+                    nouvelleImage.Image[j].R = (this.Image[this.largeurImage*k+i-j-1].R);
+                    nouvelleImage.Image[j].G = (this.Image[this.largeurImage*k+i-j-1].G);
+                    nouvelleImage.Image[j].B = (this.Image[this.largeurImage*k+i-j-1].B);
+                }
+                k++;
+            }
+            return nouvelleImage;
+        }
 
         //public MyImage Rotation()
         //{

@@ -38,6 +38,8 @@ namespace Pb_Scientifique_Info
             testNoirEtBlanc.From_Image_To_File("test_NoirEtBlanc.bmp");
             MyImage testInverse = test.Inverse();
             testInverse.From_Image_To_File("testInverse.bmp");
+            MyImage testMiroir = test.Miroir();
+            testMiroir.From_Image_To_File("testMiroir.bmp");
             /*Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);
