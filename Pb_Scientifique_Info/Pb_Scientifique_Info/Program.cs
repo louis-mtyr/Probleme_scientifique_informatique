@@ -18,7 +18,7 @@ namespace Pb_Scientifique_Info
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("test.bmp");
+            MyImage test = new MyImage("Test001.bmp");
             Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);
@@ -35,9 +35,12 @@ namespace Pb_Scientifique_Info
             Console.WriteLine();
             //Process.Start("testingTD2.bmp");
             MyImage testNoirEtBlanc = test.NoirEtBlanc();
-            testNoirEtBlanc.From_Image_To_File("test_NoirEtBlanc.bmp");
+            testNoirEtBlanc.From_Image_To_File("testing_NoirEtBlanc.bmp");
             MyImage testInverse = test.Inverse();
-            testInverse.From_Image_To_File("testInverse.bmp");
+            testInverse.From_Image_To_File("testing_Inverse.bmp");
+
+            MyImage testAgrandir = test.Agrandirv2(2);
+            testAgrandir.From_Image_To_File(("testing_Agrandir.bmp"));
             /*Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);

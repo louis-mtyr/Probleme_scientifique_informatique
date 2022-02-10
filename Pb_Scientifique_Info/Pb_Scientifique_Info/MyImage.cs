@@ -66,14 +66,14 @@ namespace Pb_Scientifique_Info
             set { this.fichierComplet = value; }
         }*/
 
-        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[] image, byte[] fichierComplet)
+        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[] image)
         {
             this.typeImage = typeImage;
             this.tailleFichier = tailleFichier;
-            this.tailleOffset = tailleOffset;
+            this.tailleOffset = tailleOffset;       //constante
             this.hauteurImage = hauteurImage;
             this.largeurImage = largeurImage;
-            this.nbBitsCouleur = nbBitsCouleur;
+            this.nbBitsCouleur = nbBitsCouleur;     //cst
             this.image = image;
             //this.fichierComplet = fichierComplet;
         }
@@ -212,6 +212,70 @@ namespace Pb_Scientifique_Info
 
             
         //}
+        
+        
+        
+
+
+        public MyImage Agrandir(int coef)
+        {
+            int newTaille = this.hauteurImage * coef * this.LargeurImage *coef *3+ 54;
+            int newHauteur = this.hauteurImage * coef;
+            int newLargeur = this.largeurImage * coef;
+            Pixel[] newImage = new Pixel[newHauteur * newLargeur];
+
+            for (int i = 0; i < newImage.Length; i++) newImage[i] = new Pixel(0, 0, 0);
+            int k = 0;
+            for (int i = 0; i < newImage.Length; i+= coef)
+            {
+                
+                
+                for (int j = 0; j < coef; j++)
+                {
+                    newImage[i + j + newLargeur * j] = new Pixel(this.image[k].R, this.image[k].G, this.image[k].B);
+                    for (int n = 0; n < coef; n++)
+                    {
+                        newImage[i + newLargeur * j + n ] = new Pixel(this.image[k].R, this.image[k].G, this.image[k].B);
+                        newImage[i + j + newLargeur * n] = new Pixel(this.image[k].R, this.image[k].G, this.image[k].B);
+                        
+                    }
+                    
+                }
+                k++;
+            }
+                  
+            MyImage imageAgrandie = new MyImage("BM", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
+
+
+
+            return imageAgrandie;
+        }
+
+        public MyImage Agrandirv2(int coef)
+        {
+            int newTaille = this.hauteurImage * coef * this.LargeurImage * coef * 3 + 54;
+            int newHauteur = this.hauteurImage * coef;
+            int newLargeur = this.largeurImage * coef;
+            Pixel[] newImage = new Pixel[newHauteur * newLargeur];
+            for (int i = 0; i < newImage.Length; i++) newImage[i] = new Pixel(0, 0, 0);
+            int n = 0;
+            for(int i = 0; i < this.image.Length; i++)
+            {
+                for(int j = 0; j < coef; j++)
+                {
+                    for(int k = 0; k < coef; k++)
+                    {
+                        newImage[n*coef + (i + j + k * newLargeur)] = this.image[i];
+                    }
+                }
+                n++;
+            }
+
+            MyImage imageAgrandie = new MyImage("BM", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
+            return imageAgrandie;
+        }
+        
+
 
 
     }
