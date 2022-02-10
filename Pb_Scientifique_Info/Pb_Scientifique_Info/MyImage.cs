@@ -223,17 +223,17 @@ namespace Pb_Scientifique_Info
             return nouvelleImage;
         }
 
-        //public MyImage Rotation()
-        //{
-        //    MyImage nouvelleImage = new MyImage(this.Myfile);
+        public MyImage Rotation()
+        {
+            MyImage nouvelleImage = new MyImage(this.Myfile);
 
 
 
-            
-        //}
-        
-        
-        
+            return nouvelleImage;
+        }
+
+
+
 
 
         public MyImage Agrandir(int coef)
@@ -294,7 +294,7 @@ namespace Pb_Scientifique_Info
             return imageAgrandie;
         }
         
-
+        
 
 
     }
