@@ -138,7 +138,7 @@ namespace Pb_Scientifique_Info
             for (int i = 34; i < 38; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.hauteurImage * this.largeurImage * 3)[i - 34];
             for (int i = 38; i < 54; i++) nouveauFichier[i] = Convert.ToByte(0); //fin recopiage header + header info
             int k = 0;
-            for (int i = 54; i < nouveauFichier.Length-2; i+=3)
+            for (int i = 54; i < nouveauFichier.Length-2; i+=3)             //copie des octets s'occupant de la couleur et remplissage du tableau de pixel en fct
             {
                 nouveauFichier[i] = this.image[k].B;
                 nouveauFichier[i+1] = this.image[k].G;
@@ -179,5 +179,40 @@ namespace Pb_Scientifique_Info
             if (val >= 0) tab[0] = Convert.ToByte(val);
             return tab;
         }
+        public MyImage Inverse()                        //return l'image avec les coleurs inversés en fct du spectre
+        {
+            MyImage nouvelleImage = new MyImage(this.Myfile);
+            for (int i = 0; i < this.Image.Length; i++)
+            {
+                nouvelleImage.Image[i].R = (byte)(255 - this.Image[i].R);
+                nouvelleImage.Image[i].G = (byte)(255 - this.Image[i].G);
+                nouvelleImage.Image[i].B = (byte)(255 - this.Image[i].B);
+            }
+            return nouvelleImage;
+        }
+
+        public MyImage NoirEtBlanc()            //return l'image en noir et blanc
+        {
+            MyImage nouvelleImage = new MyImage(this.Myfile);
+            for (int i = 0; i < this.Image.Length; i++)
+            {
+                nouvelleImage.Image[i].R = (byte)(this.Image[i].B);
+                nouvelleImage.Image[i].G = (byte)(this.Image[i].B);
+                nouvelleImage.Image[i].B = (byte)(this.Image[i].B);
+            }
+            return nouvelleImage;
+        }
+
+
+        //public MyImage Rotation()
+        //{
+        //    MyImage nouvelleImage = new MyImage(this.Myfile);
+
+
+
+            
+        //}
+
+
     }
 }

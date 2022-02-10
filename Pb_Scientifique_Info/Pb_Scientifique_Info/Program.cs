@@ -12,34 +12,13 @@ using System.ComponentModel;
 namespace Pb_Scientifique_Info
 {
     class Program
-    {
-        static public MyImage NoirEtBlanc(MyImage image)
-        {
-            MyImage nouvelleImage = new MyImage(image.Myfile);
-            for (int i=0; i<image.Image.Length; i++)
-            {
-                nouvelleImage.Image[i].R = (byte)(image.Image[i].B);
-                nouvelleImage.Image[i].G = (byte)(image.Image[i].B);
-                nouvelleImage.Image[i].B = (byte)(image.Image[i].B);
-            }
-            return nouvelleImage;
-        }
+    {     
 
-        static public MyImage Inverse(MyImage image)
-        {
-            MyImage nouvelleImage = new MyImage(image.Myfile);
-            for (int i = 0; i < image.Image.Length; i++)
-            {
-                nouvelleImage.Image[i].R = (byte)(255 - image.Image[i].R);
-                nouvelleImage.Image[i].G = (byte)(255 - image.Image[i].G);
-                nouvelleImage.Image[i].B = (byte)(255 - image.Image[i].B);
-            }
-            return nouvelleImage;
-        }
+        
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("coco.bmp");
+            MyImage test = new MyImage("test.bmp");
             Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);
@@ -55,10 +34,10 @@ namespace Pb_Scientifique_Info
             Console.WriteLine();
             Console.WriteLine();
             //Process.Start("testingTD2.bmp");
-            MyImage testNoirEtBlanc = NoirEtBlanc(test);
-            testNoirEtBlanc.From_Image_To_File("testingTD2_NoirEtBlanc.bmp");
-            MyImage testInverse = Inverse(test);
-            testInverse.From_Image_To_File("testingTD2Inverse.bmp");
+            MyImage testNoirEtBlanc = test.NoirEtBlanc();
+            testNoirEtBlanc.From_Image_To_File("test_NoirEtBlanc.bmp");
+            MyImage testInverse = test.Inverse();
+            testInverse.From_Image_To_File("testInverse.bmp");
             /*Console.WriteLine("type d'image : " + test.TypeImage);
             Console.WriteLine("taille du fichier : " + test.TailleFichier);
             Console.WriteLine("taille offset : " + test.TailleOffset);
