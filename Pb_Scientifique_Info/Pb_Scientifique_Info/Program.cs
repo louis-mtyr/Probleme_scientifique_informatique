@@ -30,12 +30,12 @@ namespace Pb_Scientifique_Info
                 if ((i % (test.LargeurImage * 3) == 0) && i!=0) Console.WriteLine();
                 Console.Write(test.Image[i] + " ");
             }*/
-            test.From_Image_To_File("testingTD2.bmp");
+            test.From_Image_To_File("verif_image.bmp");
             Console.WriteLine();
             Console.WriteLine();
             //Process.Start("testingTD2.bmp");
             MyImage testNoirEtBlanc = test.NoirEtBlanc();
-            testNoirEtBlanc.From_Image_To_File("test_NoirEtBlanc.bmp");
+            testNoirEtBlanc.From_Image_To_File("testNoirEtBlanc.bmp");
             MyImage testInverse = test.Inverse();
             testInverse.From_Image_To_File("testInverse.bmp");
             MyImage testMiroir = test.Miroir();

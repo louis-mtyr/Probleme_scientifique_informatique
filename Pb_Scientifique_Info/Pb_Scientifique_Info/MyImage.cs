@@ -14,7 +14,7 @@ namespace Pb_Scientifique_Info
         private int hauteurImage;
         private int largeurImage;
         private int nbBitsCouleur;
-        private Pixel[] image;
+        private Pixel[,] image;
         //private byte[] fichierComplet;
 
         public string Myfile
@@ -54,7 +54,7 @@ namespace Pb_Scientifique_Info
             get { return this.nbBitsCouleur; }
         }
 
-        public Pixel[] Image
+        public Pixel[,] Image
         {
             get { return this.image; }
             set { this.image = value; }
@@ -66,7 +66,7 @@ namespace Pb_Scientifique_Info
             set { this.fichierComplet = value; }
         }*/
 
-        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[] image, byte[] fichierComplet)
+        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[,] image, byte[] fichierComplet)
         {
             this.typeImage = typeImage;
             this.tailleFichier = tailleFichier;
@@ -104,15 +104,21 @@ namespace Pb_Scientifique_Info
             for (int i = 28; i < 30; i++) nbBitsCouleurEndian[i - 28] = tab[i];
             this.nbBitsCouleur = Convert_Endian_To_Int(nbBitsCouleurEndian);
 
-            Pixel[] limage = new Pixel[hauteurImage * largeurImage];            //remplissage de l'attribut du tableau de pixel
-            int k = 0;
-            for (int i = 54; i < tab.Length-2; i+=3)
+            Pixel[,] limage = new Pixel[hauteurImage,largeurImage];            //remplissage de l'attribut du tableau de pixel
+            int x = 0;
+            int y = 0;
+            for (int i = 54; i < tab.Length - 2; i += 3)
             {
-                limage[k] = new Pixel(0, 0, 0);
-                limage[k].B = tab[i];
-                limage[k].G = tab[i + 1];
-                limage[k].R = tab[i + 2];
-                k++;
+                limage[x, y] = new Pixel(0, 0, 0);
+                limage[x, y].B = tab[i];
+                limage[x, y].G = tab[i + 1];
+                limage[x, y].R = tab[i + 2];
+                if (y < largeurImage - 1) y++;
+                else
+                {
+                    y = 0;
+                    x++;
+                }
             }
             this.image = limage;
             this.myfile = myfile;
@@ -137,13 +143,19 @@ namespace Pb_Scientifique_Info
             for (int i = 30; i < 34; i++) nouveauFichier[i] = Convert.ToByte(0);
             for (int i = 34; i < 38; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.hauteurImage * this.largeurImage * 3)[i - 34];
             for (int i = 38; i < 54; i++) nouveauFichier[i] = Convert.ToByte(0); //fin recopiage header + header info
-            int k = 0;
+            int x = 0;
+            int y = 0;
             for (int i = 54; i < nouveauFichier.Length-2; i+=3)             //copie des octets s'occupant de la couleur et remplissage du tableau de pixel en fct
             {
-                nouveauFichier[i] = this.image[k].B;
-                nouveauFichier[i+1] = this.image[k].G;
-                nouveauFichier[i+2] = this.image[k].R;
-                k++;
+                nouveauFichier[i] = this.image[x, y].B;
+                nouveauFichier[i + 1] = this.image[x, y].G;
+                nouveauFichier[i + 2] = this.image[x, y].R;
+                if (y < largeurImage - 1) y++;
+                else
+                {
+                    y = 0;
+                    x++;
+                }
             }
             File.WriteAllBytes(file, nouveauFichier);
         }
@@ -185,11 +197,14 @@ namespace Pb_Scientifique_Info
         public MyImage Inverse()                        //return l'image avec les coleurs inversés en fct du spectre
         {
             MyImage nouvelleImage = new MyImage(this.Myfile);
-            for (int i = 0; i < this.Image.Length; i++)
+            for (int i = 0; i < this.Image.GetLength(0); i++)
             {
-                nouvelleImage.Image[i].R = (byte)(255 - this.Image[i].R);
-                nouvelleImage.Image[i].G = (byte)(255 - this.Image[i].G);
-                nouvelleImage.Image[i].B = (byte)(255 - this.Image[i].B);
+                for (int j = 0; j < this.Image.GetLength(1); j++)
+                {
+                    nouvelleImage.Image[i,j].R = (byte)(255 - this.Image[i,j].R);
+                    nouvelleImage.Image[i,j].G = (byte)(255 - this.Image[i,j].G);
+                    nouvelleImage.Image[i,j].B = (byte)(255 - this.Image[i,j].B);
+                }
             }
             return nouvelleImage;
         }
@@ -197,11 +212,14 @@ namespace Pb_Scientifique_Info
         public MyImage NoirEtBlanc()            //return l'image en noir et blanc
         {
             MyImage nouvelleImage = new MyImage(this.Myfile);
-            for (int i = 0; i < this.Image.Length; i++)
+            for (int i = 0; i < this.Image.GetLength(0); i++)
             {
-                nouvelleImage.Image[i].R = (byte)(this.Image[i].B);
-                nouvelleImage.Image[i].G = (byte)(this.Image[i].B);
-                nouvelleImage.Image[i].B = (byte)(this.Image[i].B);
+                for (int j = 0; j < this.Image.GetLength(1); j++)
+                {
+                    nouvelleImage.Image[i,j].R = (byte)(this.Image[i,j].B);
+                    nouvelleImage.Image[i,j].G = (byte)(this.Image[i,j].B);
+                    nouvelleImage.Image[i,j].B = (byte)(this.Image[i,j].B);
+                }
             }
             return nouvelleImage;
         }
@@ -210,13 +228,13 @@ namespace Pb_Scientifique_Info
         {
             MyImage nouvelleImage = new MyImage(this.myfile);
             int k = 1;
-            for (int i=0; i<this.image.Length; i+=this.largeurImage)
+            for (int i=0; i<this.image.GetLength(0); i++)
             {
-                for (int j=i; j<this.largeurImage+i; j++)
+                for (int j=0; j<this.image.GetLength(1); j++)
                 {
-                    nouvelleImage.Image[j].R = (this.Image[this.largeurImage*k+i-j-1].R);
-                    nouvelleImage.Image[j].G = (this.Image[this.largeurImage*k+i-j-1].G);
-                    nouvelleImage.Image[j].B = (this.Image[this.largeurImage*k+i-j-1].B);
+                    nouvelleImage.Image[i,j].R = (this.Image[i, this.largeurImage - j - 1].R);
+                    nouvelleImage.Image[i,j].G = (this.Image[i, this.largeurImage - j - 1].G);
+                    nouvelleImage.Image[i,j].B = (this.Image[i, this.largeurImage - j - 1].B);
                 }
                 k++;
             }
