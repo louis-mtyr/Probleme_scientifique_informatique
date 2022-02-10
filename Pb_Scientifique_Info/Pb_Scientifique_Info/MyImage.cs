@@ -66,7 +66,7 @@ namespace Pb_Scientifique_Info
             set { this.fichierComplet = value; }
         }*/
 
-        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[,] image, byte[] fichierComplet)
+        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[,] image)
         {
             this.typeImage = typeImage;
             this.tailleFichier = tailleFichier;
@@ -178,7 +178,7 @@ namespace Pb_Scientifique_Info
             byte[] tab = new byte[4];
             if (val > (256*256*256))
             {
-                tab[3] = Convert.ToByte(val / 256*256*256);
+                tab[3] = Convert.ToByte(val / (256*256*256));
                 val = val % (256*256*256);
             }
             if (val > (256*256))
@@ -224,7 +224,7 @@ namespace Pb_Scientifique_Info
             return nouvelleImage;
         }
 
-        public MyImage Miroir()
+        public MyImage Miroir()                 //return l'image avec un effet miroir
         {
             MyImage nouvelleImage = new MyImage(this.myfile);
             int k = 1;
@@ -241,79 +241,78 @@ namespace Pb_Scientifique_Info
             return nouvelleImage;
         }
 
-        public MyImage Rotation()
+        /*public MyImage Rotation()
         {
             MyImage nouvelleImage = new MyImage(this.Myfile);
 
 
 
             return nouvelleImage;
-        }
+        }*/
 
-
-
-
-
-        public MyImage Agrandir(int coef)
+        public MyImage Agrandir(int coef)                       //return l'image aggrandie -coef- fois
         {
             int newTaille = this.hauteurImage * coef * this.LargeurImage *coef *3+ 54;
             int newHauteur = this.hauteurImage * coef;
             int newLargeur = this.largeurImage * coef;
-            Pixel[] newImage = new Pixel[newHauteur * newLargeur];
+            Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
+            for (int i = 0; i < newHauteur; i++) for (int j=0; j<newLargeur; j++) newImage[i,j] = new Pixel(0, 0, 0);
 
-            for (int i = 0; i < newImage.Length; i++) newImage[i] = new Pixel(0, 0, 0);
-            int k = 0;
-            for (int i = 0; i < newImage.Length; i+= coef)
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < newHauteur; i += coef)
             {
-                
-                
-                for (int j = 0; j < coef; j++)
+                for (int j = 0; j < newLargeur; j += coef)
                 {
-                    newImage[i + j + newLargeur * j] = new Pixel(this.image[k].R, this.image[k].G, this.image[k].B);
+                    newImage[i, j] = new Pixel(image[x, y].R, image[x, y].G, image[x, y].B);
                     for (int n = 0; n < coef; n++)
                     {
-                        newImage[i + newLargeur * j + n ] = new Pixel(this.image[k].R, this.image[k].G, this.image[k].B);
-                        newImage[i + j + newLargeur * n] = new Pixel(this.image[k].R, this.image[k].G, this.image[k].B);
-                        
+                        for (int k = 0; k < coef; k++)
+                        {
+                            newImage[i + n, j + k] = new Pixel(image[x, y].R, image[x, y].G, image[x, y].B);
+                        }
                     }
-                    
-                }
-                k++;
-            }
-                  
-            MyImage imageAgrandie = new MyImage("BM", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
-
-
-
-            return imageAgrandie;
-        }
-
-        public MyImage Agrandirv2(int coef)
-        {
-            int newTaille = this.hauteurImage * coef * this.LargeurImage * coef * 3 + 54;
-            int newHauteur = this.hauteurImage * coef;
-            int newLargeur = this.largeurImage * coef;
-            Pixel[] newImage = new Pixel[newHauteur * newLargeur];
-            for (int i = 0; i < newImage.Length; i++) newImage[i] = new Pixel(0, 0, 0);
-            int n = 0;
-            for(int i = 0; i < this.image.Length; i++)
-            {
-                for(int j = 0; j < coef; j++)
-                {
-                    for(int k = 0; k < coef; k++)
+                    if (y < largeurImage - 1) y++;
+                    else
                     {
-                        newImage[n*coef + (i + j + k * newLargeur)] = this.image[i];
+                        y = 0;
+                        x++;
                     }
                 }
-                n++;
             }
-
             MyImage imageAgrandie = new MyImage("BM", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
             return imageAgrandie;
         }
-        
-        
 
+        public MyImage Reduire(int coef)                    //return l'image réduite -coef- fois
+        {                                                   //Attention : ne return l'image que si -coef- est un diviseur commun de hauteurImage et largeurImage
+            if (hauteurImage % coef == 0 && largeurImage % coef == 0)
+            {
+                int newTaille = (this.hauteurImage / coef) * (this.LargeurImage / coef) * 3 + 54;
+                int newHauteur = this.hauteurImage / coef;
+                int newLargeur = this.largeurImage / coef;
+                Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
+                for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);
 
+                int x = 0;
+                int y = 0;
+                for (int i = 0; i < hauteurImage; i += coef)
+                {
+                    for (int j = 0; j < largeurImage; j += coef)
+                    {
+                        newImage[x, y] = new Pixel(image[i, j].R, image[i, j].G, image[i, j].B);
+                        if (y < newLargeur - 1) y++;
+                        else
+                        {
+                            y = 0;
+                            x++;
+                        }
+                    }
+                }
+                MyImage imageReduite = new MyImage("BM", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
+                return imageReduite;
+            }
+            else return null;
+        }
     }
 }
