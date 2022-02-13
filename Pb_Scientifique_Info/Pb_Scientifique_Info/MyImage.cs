@@ -14,7 +14,7 @@ namespace Pb_Scientifique_Info
         private int hauteurImage;
         private int largeurImage;
         private int nbBitsCouleur;
-        private Pixel[] image;
+        private Pixel[,] image;
         //private byte[] fichierComplet;
 
         public string Myfile
@@ -54,7 +54,7 @@ namespace Pb_Scientifique_Info
             get { return this.nbBitsCouleur; }
         }
 
-        public Pixel[] Image
+        public Pixel[,] Image
         {
             get { return this.image; }
             set { this.image = value; }
@@ -66,14 +66,14 @@ namespace Pb_Scientifique_Info
             set { this.fichierComplet = value; }
         }*/
 
-        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[] image, byte[] fichierComplet)
+        public MyImage(string typeImage, int tailleFichier, int tailleOffset, int hauteurImage, int largeurImage, int nbBitsCouleur, Pixel[,] image)
         {
             this.typeImage = typeImage;
             this.tailleFichier = tailleFichier;
-            this.tailleOffset = tailleOffset;
+            this.tailleOffset = tailleOffset;       //constante
             this.hauteurImage = hauteurImage;
             this.largeurImage = largeurImage;
-            this.nbBitsCouleur = nbBitsCouleur;
+            this.nbBitsCouleur = nbBitsCouleur;     //cst
             this.image = image;
             //this.fichierComplet = fichierComplet;
         }
@@ -85,7 +85,7 @@ namespace Pb_Scientifique_Info
             if (tab[0] == (byte)66) if (tab[1] == (byte)77) this.typeImage = "BitMap";    //si les premiers nombres du header sont 66 et 77, alors c'est du .BMP
 
             byte[] tailleFichierEndian = new byte[4];                               //calcul de la taille totale du fichier (image + header)
-            for (int i = 2; i < 6; i++) tailleFichierEndian[i-2] = tab[i];
+            for (int i = 2; i < 6; i++) tailleFichierEndian[i - 2] = tab[i];
             this.tailleFichier = Convert_Endian_To_Int(tailleFichierEndian);
 
             byte[] tailleOffsetEndian = new byte[4];                                 //taille du header info
@@ -104,15 +104,21 @@ namespace Pb_Scientifique_Info
             for (int i = 28; i < 30; i++) nbBitsCouleurEndian[i - 28] = tab[i];
             this.nbBitsCouleur = Convert_Endian_To_Int(nbBitsCouleurEndian);
 
-            Pixel[] limage = new Pixel[hauteurImage * largeurImage];            //remplissage de l'attribut du tableau de pixel
-            int k = 0;
-            for (int i = 54; i < tab.Length-2; i+=3)
+            Pixel[,] limage = new Pixel[hauteurImage, largeurImage];            //remplissage de l'attribut du tableau de pixel
+            int x = 0;
+            int y = 0;
+            for (int i = 54; i < tab.Length - 2; i += 3)
             {
-                limage[k] = new Pixel(0, 0, 0);
-                limage[k].B = tab[i];
-                limage[k].G = tab[i + 1];
-                limage[k].R = tab[i + 2];
-                k++;
+                limage[x, y] = new Pixel(0, 0, 0);
+                limage[x, y].B = tab[i];
+                limage[x, y].G = tab[i + 1];
+                limage[x, y].R = tab[i + 2];
+                if (y < largeurImage - 1) y++;
+                else
+                {
+                    y = 0;
+                    x++;
+                }
             }
             this.image = limage;
             this.myfile = myfile;
@@ -137,47 +143,189 @@ namespace Pb_Scientifique_Info
             for (int i = 30; i < 34; i++) nouveauFichier[i] = Convert.ToByte(0);
             for (int i = 34; i < 38; i++) nouveauFichier[i] = Convert_Int_To_Endian(this.hauteurImage * this.largeurImage * 3)[i - 34];
             for (int i = 38; i < 54; i++) nouveauFichier[i] = Convert.ToByte(0); //fin recopiage header + header info
-            int k = 0;
-            for (int i = 54; i < nouveauFichier.Length-2; i+=3)
+            int x = 0;
+            int y = 0;
+            for (int i = 54; i < nouveauFichier.Length-2; i+=3)             //copie des octets s'occupant de la couleur et remplissage du tableau de pixel en fct
             {
-                nouveauFichier[i] = this.image[k].B;
-                nouveauFichier[i+1] = this.image[k].G;
-                nouveauFichier[i+2] = this.image[k].R;
-                k++;
+                nouveauFichier[i] = this.image[x, y].B;
+                nouveauFichier[i + 1] = this.image[x, y].G;
+                nouveauFichier[i + 2] = this.image[x, y].R;
+                if (y < largeurImage - 1) y++;
+                else
+                {
+                    y = 0;
+                    x++;
+                }
             }
             File.WriteAllBytes(file, nouveauFichier);
         }
 
         public int Convert_Endian_To_Int(byte[] tab)        //Convertir du base 256 little endian en base 10
         {
-            double res = 0;
+            int res = 0;
             for (int i=0; i<tab.Length; i++)
             {
-                res += tab[i]*Math.Pow(256, i);
+                if (i == 0) res += tab[i];
+                if (i == 1) res += tab[i] * 256;
+                if (i == 2) res += tab[i] * 256 * 256;
+                if (i == 3) res += tab[i] * 256 * 256 * 256;
             }
-            return (int)res;
+            return res;
         }
 
         public byte[] Convert_Int_To_Endian(int val)        //Convertir du base 10 en base 256 en little endian
         {
             byte[] tab = new byte[4];
-            if (val > Math.Pow(256, 3))
+            if (val > (256*256*256))
             {
-                tab[3] = Convert.ToByte(val / Math.Pow(256, 3));
-                val = val % (int)Math.Pow(256, 3);
+                tab[3] = Convert.ToByte(val / (256*256*256));
+                val = val % (256*256*256);
             }
-            if (val > Math.Pow(256, 2))
+            if (val > (256*256))
             {
-                tab[2] = Convert.ToByte(val / Math.Pow(256, 2));
-                val = val % (int)Math.Pow(256, 2);
+                tab[2] = Convert.ToByte(val / (256*256));
+                val = val % (256*256);
             }
-            if (val > Math.Pow(256, 1))
+            if (val > 256)
             {
-                tab[1] = Convert.ToByte(val / Math.Pow(256, 1));
-                val = val % (int)Math.Pow(256, 1);
+                tab[1] = Convert.ToByte(val / 256);
+                val = val % 256;
             }
             if (val >= 0) tab[0] = Convert.ToByte(val);
             return tab;
+        }
+        public MyImage Inverse()                        //return l'image avec les coleurs inversés en fct du spectre
+        {
+            MyImage nouvelleImage = new MyImage(this.Myfile);
+            for (int i = 0; i < this.Image.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.Image.GetLength(1); j++)
+                {
+                    nouvelleImage.Image[i,j].R = (byte)(255 - this.Image[i,j].R);
+                    nouvelleImage.Image[i,j].G = (byte)(255 - this.Image[i,j].G);
+                    nouvelleImage.Image[i,j].B = (byte)(255 - this.Image[i,j].B);
+                }
+            }
+            return nouvelleImage;
+        }
+
+        public MyImage NoirEtBlanc()            //return l'image en noir et blanc
+        {
+            MyImage nouvelleImage = new MyImage(this.Myfile);
+            for (int i = 0; i < this.Image.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.Image.GetLength(1); j++)
+                {
+                    nouvelleImage.Image[i,j].R = (byte)(this.Image[i,j].B);
+                    nouvelleImage.Image[i,j].G = (byte)(this.Image[i,j].B);
+                    nouvelleImage.Image[i,j].B = (byte)(this.Image[i,j].B);
+                }
+            }
+            return nouvelleImage;
+        }
+
+        public MyImage MiroirHorizontal()                 //return l'image avec un effet miroir
+        {
+            MyImage nouvelleImage = new MyImage(this.myfile);
+            for (int i=0; i<this.image.GetLength(0); i++)
+            {
+                for (int j=0; j<this.image.GetLength(1); j++)
+                {
+                    nouvelleImage.Image[i,j].R = (this.Image[i, this.largeurImage - j - 1].R);
+                    nouvelleImage.Image[i,j].G = (this.Image[i, this.largeurImage - j - 1].G);
+                    nouvelleImage.Image[i,j].B = (this.Image[i, this.largeurImage - j - 1].B);
+                }
+            }
+            return nouvelleImage;
+        }
+
+        public MyImage MiroirVertical()                 //return l'image avec un effet miroir
+        {
+            MyImage nouvelleImage = new MyImage(this.myfile);
+            for (int i = 0; i < this.image.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.image.GetLength(1); j++)
+                {
+                    nouvelleImage.Image[i, j].R = (this.Image[this.hauteurImage - i - 1, j].R);
+                    nouvelleImage.Image[i, j].G = (this.Image[this.hauteurImage - i - 1, j].G);
+                    nouvelleImage.Image[i, j].B = (this.Image[this.hauteurImage - i - 1, j].B);
+                }
+            }
+            return nouvelleImage;
+        }
+
+        /*public MyImage Rotation()
+        {
+            MyImage nouvelleImage = new MyImage(this.Myfile);
+
+
+
+            return nouvelleImage;
+        }*/
+
+        public MyImage Reduire(int coefHauteur, int coefLargeur)                    //return l'image réduite -coefHauteur * coefLargeur- fois
+        {                                                   //Attention : ne return l'image que si -coef- est un diviseur commun de hauteurImage ou largeurImage
+            if (hauteurImage % coefHauteur == 0 && largeurImage % coefLargeur == 0)
+            {
+                int newTaille = (this.hauteurImage / coefHauteur) * (this.LargeurImage / coefLargeur) * 3 + 54;
+                int newHauteur = this.hauteurImage / coefHauteur;
+                int newLargeur = this.largeurImage / coefLargeur;
+                Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
+                for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);
+
+                int x = 0;
+                int y = 0;
+                for (int i = 0; i < hauteurImage; i += coefHauteur)
+                {
+                    for (int j = 0; j < largeurImage; j += coefLargeur)
+                    {
+                        newImage[x, y] = new Pixel(image[i, j].R, image[i, j].G, image[i, j].B);
+                        if (y < newLargeur - 1) y++;
+                        else
+                        {
+                            y = 0;
+                            x++;
+                        }
+                    }
+                }
+                MyImage imageReduite = new MyImage("BM", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
+                return imageReduite;
+            }
+            else return null;
+        }
+
+        public MyImage Agrandir(int coefHauteur, int coefLargeur)                       //return l'image aggrandie -coef- fois
+        {
+            int newTaille = this.hauteurImage * coefHauteur * this.LargeurImage * coefLargeur * 3 + 54;
+            int newHauteur = this.hauteurImage * coefHauteur;
+            int newLargeur = this.largeurImage * coefLargeur;
+            Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
+            for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);
+
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < newHauteur; i += coefHauteur)
+            {
+                for (int j = 0; j < newLargeur; j += coefLargeur)
+                {
+                    newImage[i, j] = new Pixel(image[x, y].R, image[x, y].G, image[x, y].B);
+                    for (int n = 0; n < coefHauteur; n++)
+                    {
+                        for (int k = 0; k < coefLargeur; k++)
+                        {
+                            newImage[i + n, j + k] = new Pixel(image[x, y].R, image[x, y].G, image[x, y].B);
+                        }
+                    }
+                    if (y < largeurImage - 1) y++;
+                    else
+                    {
+                        y = 0;
+                        x++;
+                    }
+                }
+            }
+            MyImage imageAgrandie = new MyImage("BM", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
+            return imageAgrandie;
         }
     }
 }
