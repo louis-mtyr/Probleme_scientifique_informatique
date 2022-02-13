@@ -19,7 +19,7 @@ namespace Pb_Scientifique_Info
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("tigre.bmp");
+            MyImage test = new MyImage("coco.bmp");
 
             if (test.TypeImage == "BitMap")
             {
@@ -36,6 +36,9 @@ namespace Pb_Scientifique_Info
 
                 MyImage testNoirEtBlanc = test.NoirEtBlanc();
                 testNoirEtBlanc.From_Image_To_File("testNoirEtBlanc.bmp");
+
+                MyImage testNuanceDeGris = test.NuanceDeGris();
+                testNuanceDeGris.From_Image_To_File("testNuanceDeGris.bmp");
 
                 MyImage testInverse = test.Inverse();
                 testInverse.From_Image_To_File("testInverse.bmp");
@@ -61,15 +64,20 @@ namespace Pb_Scientifique_Info
                 if (testReduit != null) testReduit.From_Image_To_File("testReduit.bmp");
                 else Console.WriteLine("coefficient de réduction impossible");
 
+                Console.WriteLine("Veuillez choisir un angle de rotation vers la droite :");
+                int angle = Convert.ToInt32(Console.ReadLine());
+                MyImage testRotation = test.Rotation(angle);
+                testRotation.From_Image_To_File("testRotation.bmp");
+
                 /*Console.WriteLine("Header :");
-                for (int i = 0; i < 14; i++) Console.Write(test.Image[i] + " ");
+                for (int i = 0; i < 14; i++) Console.Write(testRotation.FichierComplet[i] + " ");
                 Console.WriteLine("\n\nHeader Info :");
-                for (int i = 14; i < 54; i++) Console.Write(test.Image[i] + " ");
+                for (int i = 14; i < 54; i++) Console.Write(testRotation.FichierComplet[i] + " ");
                 Console.WriteLine("\n\nImage :");
-                for (int i = 54; i < test.Image.Length; i += 60)
+                for (int i = 54; i < testRotation.FichierComplet.Length; i += testRotation.LargeurImage*3)
                 {
-                    for (int j = i; j < i + 60; j++)
-                        Console.Write(test.Image[j] + " ");
+                    for (int j = i; j < i + testRotation.LargeurImage*3; j++)
+                        Console.Write(testRotation.FichierComplet[j] + " ");
                     Console.WriteLine();
                 }*/
             }
