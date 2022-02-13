@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Media;
 using System.ComponentModel;
+using System.IO;
 
 namespace Pb_Scientifique_Info
 {
@@ -46,11 +47,33 @@ namespace Pb_Scientifique_Info
             Console.WriteLine("hauteur de l'image : " + test.HauteurImage);
             Console.WriteLine("largeur de l'image : " + test.LargeurImage);
             Console.WriteLine("nombre de bits couleur : " + test.NbBitsCouleur);
+
             /*for (int i=0; i<test.Image.Length; i++)
             {
                 if ((i % (test.LargeurImage * 3) == 0) && i!=0) Console.WriteLine();
                 Console.Write(test.Image[i] + " ");
             }*/
+
+            /*byte[] tabTest = File.ReadAllBytes("tigre.bmp");
+            Console.WriteLine("Header :");
+            for (int i = 0; i < 14; i++) Console.Write(tabTest[i] + " ");
+            Console.WriteLine("\n\nHeader Info :");
+            for (int i = 14; i < 54; i++) Console.Write(tabTest[i] + " ");
+            Console.WriteLine("\n\nImage :");
+            for (int i = 54; i < tabTest.Length-59; i += 60)
+            {
+                for (int j = i; j < i + 60; j++)
+                    Console.Write(tabTest[j] + " ");
+                Console.WriteLine();
+            }*/
+
+            /*test.From_Image_To_File("testingTD2Inverse.bmp");
+
+            for (int i = 0; i < 4; i++)
+            {
+                Console.Write(test.Convert_Int_To_Endian(800)[i] + " ");
+            }*/
+
             test.From_Image_To_File("testingTD2.bmp");
             Console.WriteLine();
             Console.WriteLine();
@@ -59,34 +82,6 @@ namespace Pb_Scientifique_Info
             testNoirEtBlanc.From_Image_To_File("testingTD2_NoirEtBlanc.bmp");
             MyImage testInverse = Inverse(test);
             testInverse.From_Image_To_File("testingTD2Inverse.bmp");
-            /*Console.WriteLine("type d'image : " + test.TypeImage);
-            Console.WriteLine("taille du fichier : " + test.TailleFichier);
-            Console.WriteLine("taille offset : " + test.TailleOffset);
-            Console.WriteLine("hauteur de l'image : " + test.HauteurImage);
-            Console.WriteLine("largeur de l'image : " + test.LargeurImage);
-            Console.WriteLine("nombre de bits couleur : " + test.NbBitsCouleur);
-            for (int i=0; i<test.Image.Length; i++)
-            {
-                if ((i % (test.LargeurImage * 3) == 0) && i!=0) Console.WriteLine();
-                Console.Write(test.Image[i] + " ");
-            }
-            Console.WriteLine("Header :");
-            for (int i = 0; i < 14; i++) Console.Write(test.Image[i] + " ");
-            Console.WriteLine("\n\nHeader Info :");
-            for (int i = 14; i < 54; i++) Console.Write(test.Image[i] + " ");
-            Console.WriteLine("\n\nImage :");
-            for (int i = 54; i < test.Image.Length; i += 60)
-            {
-                for (int j = i; j < i + 60; j++)
-                    Console.Write(test.Image[j] + " ");
-                Console.WriteLine();
-            }
-            test.From_Image_To_File("testingTD2Inverse.bmp");
-
-            for (int i = 0; i < 4; i++)
-            {
-                Console.Write(test.Convert_Int_To_Endian(800)[i] + " ");
-            }*/
         }
     }
 }
