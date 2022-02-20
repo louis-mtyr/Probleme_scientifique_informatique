@@ -162,7 +162,7 @@ namespace Pb_Scientifique_Info
             int y = 0;
             for (int i = 54; i < nouveauFichier.Length-2; i+=3)             //copie des octets s'occupant de la couleur et remplissage du tableau de pixel en fct
             {
-                if (x != this.hauteurImage - 1)
+                if (x != this.hauteurImage)
                 {
                     nouveauFichier[i] = this.image[x, y].B;
                     nouveauFichier[i + 1] = this.image[x, y].G;
@@ -172,20 +172,20 @@ namespace Pb_Scientifique_Info
                     {
                         if (this.largeurImage % 4 == 3)
                         {
-                            nouveauFichier[i + 3] = 255;
+                            nouveauFichier[i + 3] = 0;
                             i++;
                         }
                         if (this.largeurImage % 4 == 2)
                         {
-                            nouveauFichier[i + 3] = 255;
-                            nouveauFichier[i + 4] = 255;
+                            nouveauFichier[i + 3] = 0;
+                            nouveauFichier[i + 4] = 0;
                             i += 2;
                         }
                         if (this.largeurImage % 4 == 1)
                         {
-                            nouveauFichier[i + 3] = 255;
-                            nouveauFichier[i + 4] = 255;
-                            nouveauFichier[i + 5] = 255;
+                            nouveauFichier[i + 3] = 0;
+                            nouveauFichier[i + 4] = 0;
+                            nouveauFichier[i + 5] = 0;
                             i += 3;
                         }
                         y = 0;
@@ -194,9 +194,9 @@ namespace Pb_Scientifique_Info
                 }
                 else
                 {
-                    nouveauFichier[i] = 255;
-                    nouveauFichier[i + 1] = 255;
-                    nouveauFichier[i + 2] = 255;
+                    nouveauFichier[i] = 0;
+                    nouveauFichier[i + 1] = 0;
+                    nouveauFichier[i + 2] = 0;
                 }
             }
             this.fichierComplet = nouveauFichier;
@@ -424,7 +424,7 @@ namespace Pb_Scientifique_Info
                 MyImage imageReduite = new MyImage("BitMap", newTaille, newTailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
                 return imageReduite;
             }
-            else return this;
+            else return null;
         }
 
         public MyImage Agrandir(int coefHauteur, int coefLargeur)                       //return l'image aggrandie -coefHauteur * coefLargeur- fois
