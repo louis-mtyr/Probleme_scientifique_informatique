@@ -303,13 +303,13 @@ namespace Pb_Scientifique_Info
                 }
             }
 
-            for(int i = (int)Math.Abs(Math.Sin(angleRadian) * this.hauteurImage) +1; i >= 0 ; i--)
+            for(int i = 0; i < Math.Abs(Math.Sin(angleRadian)); i++)
             {
-                for (int j = 0; j < ((int)Math.Abs(Math.Sin(angleRadian) * this.hauteurImage - i) * Math.Abs(Math.Tan(angleRadian))); j++)
+                for (int j = 0; j < i * Math.Abs(Math.Tan(angleRadian)); j++)
                 {
-                    newImage[i, j].R = (byte)128;
-                    newImage[i, j].B = (byte)128;
-                    newImage[i, j].G = (byte)128;
+                    newImage[(int)Math.Abs(Math.Sin(angleRadian)) - i, j].R = (byte)128;
+                    newImage[(int)Math.Abs(Math.Sin(angleRadian)) - i, j].B = (byte)128;
+                    newImage[(int)Math.Abs(Math.Sin(angleRadian)) - i, j].G = (byte)128;
                 }
             }
 

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "glPEmvt3h+S/V/bYcOdHr4V5pd3ba8Kt9APuRtWC4j4zwgGc/Qux6AJjy6+0CIqveuKGHMnqc8aLCL3iPXOWQg==",
+  "dgSpecHash": "pUYD66rob1jBiRsWpUsEcgHfYCqTCrtQ5+tHH5/Uzm4ndzskxlgWB1TlFW/7/fFQNPbucBboVPSPsIs1KEu/hg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\meric\\OneDrive\\Bureau\\ESILV A2\\S2\\Pb_Scientifique_Informatique\\Pb_Scientifique_Projet\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Méric Lallement\\Desktop\\Cours ESILV\\ESILV A2\\PSI\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Méric Lallement\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.13\\microsoft.netcore.app.host.win-x64.3.1.13.nupkg.sha512"
+  ],
   "logs": []
 }
