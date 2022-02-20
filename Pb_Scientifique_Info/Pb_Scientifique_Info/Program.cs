@@ -19,7 +19,7 @@ namespace Pb_Scientifique_Info
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("tigre.bmp");
+            MyImage test = new MyImage("Test001.bmp");
 
             if (test.TypeImage == "BitMap")
             {
