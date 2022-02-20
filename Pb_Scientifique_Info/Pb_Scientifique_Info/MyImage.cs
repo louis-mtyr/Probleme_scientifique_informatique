@@ -131,23 +131,16 @@ namespace Pb_Scientifique_Info
 
         public void From_Image_To_File(string file)
         {
-            if (this.tailleOffset % 4 == 3)
-            {
-                this.tailleOffset += 1;
-                this.tailleFichier += 1;
-            }
-            if (this.tailleOffset % 4 == 2)
-            {
-                this.tailleOffset += 2;
-                this.tailleFichier += 2;
-            }
-            if (this.tailleOffset % 4 == 1)
-            {
-                this.tailleOffset += 3;
-                this.tailleFichier += 3;
-            }
-
-            byte[] nouveauFichier = new byte[this.tailleFichier];           //début recopiage header + header info
+            int coefHauteur = 0;
+            int coefLargeur = 0;
+            if (this.largeurImage % 4 == 3) coefLargeur = 1;
+            if (this.largeurImage % 4 == 2) coefLargeur = 2;
+            if (this.largeurImage % 4 == 1) coefLargeur = 3;
+            if (this.hauteurImage % 4 == 3) coefHauteur = 1;
+            if (this.hauteurImage % 4 == 2) coefHauteur = 2;
+            if (this.hauteurImage % 4 == 1) coefHauteur = 3;
+                                                                    //début recopiage header + header info
+            byte[] nouveauFichier = new byte[this.tailleFichier + coefHauteur * this.hauteurImage + coefLargeur * this.largeurImage];
             nouveauFichier[0] = Convert.ToByte(66);
             nouveauFichier[1] = Convert.ToByte(77);
             byte[] tailleFichierEndian = Convert_Int_To_Endian(this.tailleFichier);
@@ -169,14 +162,41 @@ namespace Pb_Scientifique_Info
             int y = 0;
             for (int i = 54; i < nouveauFichier.Length-2; i+=3)             //copie des octets s'occupant de la couleur et remplissage du tableau de pixel en fct
             {
-                nouveauFichier[i] = this.image[x, y].B;
-                nouveauFichier[i + 1] = this.image[x, y].G;
-                nouveauFichier[i + 2] = this.image[x, y].R;
-                if (y < largeurImage - 1) y++;
+                if (x != this.hauteurImage - 1)
+                {
+                    nouveauFichier[i] = this.image[x, y].B;
+                    nouveauFichier[i + 1] = this.image[x, y].G;
+                    nouveauFichier[i + 2] = this.image[x, y].R;
+                    if (y < largeurImage - 1) y++;
+                    else
+                    {
+                        if (this.largeurImage % 4 == 3)
+                        {
+                            nouveauFichier[i + 3] = 255;
+                            i++;
+                        }
+                        if (this.largeurImage % 4 == 2)
+                        {
+                            nouveauFichier[i + 3] = 255;
+                            nouveauFichier[i + 4] = 255;
+                            i += 2;
+                        }
+                        if (this.largeurImage % 4 == 1)
+                        {
+                            nouveauFichier[i + 3] = 255;
+                            nouveauFichier[i + 4] = 255;
+                            nouveauFichier[i + 5] = 255;
+                            i += 3;
+                        }
+                        y = 0;
+                        x++;
+                    }
+                }
                 else
                 {
-                    y = 0;
-                    x++;
+                    nouveauFichier[i] = 255;
+                    nouveauFichier[i + 1] = 255;
+                    nouveauFichier[i + 2] = 255;
                 }
             }
             this.fichierComplet = nouveauFichier;
