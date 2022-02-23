@@ -91,8 +91,8 @@ namespace Pb_Scientifique_Info
                 for (int i = 2; i < 6; i++) tailleFichierEndian[i - 2] = tab[i];
                 this.tailleFichier = Convert_Endian_To_Int(tailleFichierEndian);
 
-                byte[] tailleOffsetEndian = new byte[4];                                 //taille du header info
-                for (int i = 34; i < 18; i++) tailleOffsetEndian[i - 34] = tab[i];
+                byte[] tailleOffsetEndian = new byte[4];                                 //taille de l'offset
+                for (int i = 34; i < 38; i++) tailleOffsetEndian[i - 34] = tab[i];
                 this.tailleOffset = Convert_Endian_To_Int(tailleOffsetEndian);
 
                 byte[] largeurImageEndian = new byte[4];                                //taille de la largeur de l'image
@@ -140,7 +140,7 @@ namespace Pb_Scientifique_Info
             if (this.hauteurImage % 4 == 2) coefHauteur = 2;
             if (this.hauteurImage % 4 == 1) coefHauteur = 3;
                                                                     //début recopiage header + header info
-            byte[] nouveauFichier = new byte[this.tailleFichier + coefHauteur * this.hauteurImage + coefLargeur * this.largeurImage];
+            byte[] nouveauFichier = new byte[this.tailleFichier + coefHauteur * this.largeurImage + coefLargeur * this.hauteurImage];
             nouveauFichier[0] = Convert.ToByte(66);
             nouveauFichier[1] = Convert.ToByte(77);
             byte[] tailleFichierEndian = Convert_Int_To_Endian(this.tailleFichier);
@@ -329,7 +329,7 @@ namespace Pb_Scientifique_Info
             int newLargeur = (int)(Math.Abs(this.largeurImage * Math.Cos(angleRadian)) + Math.Abs(this.hauteurImage * Math.Cos((Math.PI / 2) - angleRadian))) ;  //ALEDDDDDDD
             int newTaille = newHauteur * newLargeur * 3 + 54;                                                                               //pour l'instant je cherche à créer les bords mais aled enfait
             Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
-            for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);              //enlever la ligne quand la fct sera finie
+            for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);              //enlever la ligne quand la fct sera finie (nan il faut la garder c'est important !)
 
             for(int i = 0; i < Math.Abs(Math.Cos(angleRadian) * this.hauteurImage); i++)                    //grisage coin haut gauche
             {
@@ -341,15 +341,62 @@ namespace Pb_Scientifique_Info
                 }
             }
 
-            for(int i = 0; i < Math.Abs(Math.Sin(angleRadian)); i++)
+            for(int i = (int)Math.Abs(Math.Sin(angleRadian) * this.hauteurImage) +1; i >= 0 ; i--)          //grisage coin bas gauche
             {
-                for (int j = 0; j < i * Math.Abs(Math.Tan(angleRadian)); j++)
+                for (int j = 0; j < ((int)Math.Abs(Math.Sin(angleRadian) * this.hauteurImage - i) * Math.Abs(Math.Tan(angleRadian))); j++)
                 {
-                    newImage[(int)Math.Abs(Math.Sin(angleRadian)) - i, j].R = (byte)128;
-                    newImage[(int)Math.Abs(Math.Sin(angleRadian)) - i, j].B = (byte)128;
-                    newImage[(int)Math.Abs(Math.Sin(angleRadian)) - i, j].G = (byte)128;
+                    newImage[i, j].R = (byte)128;
+                    newImage[i, j].B = (byte)128;
+                    newImage[i, j].G = (byte)128;
                 }
             }
+
+            /*int x = 0;
+            int y = 0;
+            //int compteur = 0;
+            for (int i = (int)(this.largeurImage * Math.Abs(Math.Sin(angleRadian))); i < newHauteur; i++)
+            {
+                for (int j = i - (int)(this.largeurImage * Math.Abs(Math.Sin(angleRadian))); j < (int)(this.hauteurImage * Math.Abs(Math.Sin(angleRadian))); j++)
+                {
+                    newImage[i, j] = this.image[x, y];
+                    if (y < this.largeurImage - 1) y++;
+                    if (x < this.hauteurImage - 1)
+                    {
+                        x += (int)(Math.Abs(Math.Sin(angleRadian)));
+                        y += (int)(Math.Abs(Math.Cos(angleRadian)));
+                    }
+                    else
+                    {
+                        y = 0;
+                        x++;
+                        //compteur++;
+                        //x=compteur;
+                    }
+                }
+            }
+
+            x = this.hauteurImage-1;
+            y = 0;
+            for (int i = newHauteur-1; i>(int)(this.largeurImage*Math.Abs(Math.Sin(angleRadian))); i--)
+            {
+                for (int j = (int)(this.hauteurImage * Math.Abs(Math.Sin(angleRadian))); j < newLargeur - (i - (int)(this.largeurImage * Math.Abs(Math.Sin(angleRadian)))); j++)
+                {
+                    newImage[i, j] = this.image[x, y];
+                    if (y < this.largeurImage - 1) y++;
+                    if (x < this.hauteurImage - 1)
+                    {
+                        x += (int)(Math.Abs(Math.Sin(angleRadian)));
+                        y += (int)(Math.Abs(Math.Cos(angleRadian)));
+                    }
+                    else
+                    {
+                        y = 0;
+                        x--;
+                        //compteur++;
+                        //x=compteur;
+                    }
+                }
+            }*/
 
             //for (int i=0; i < (int)(this.largeurImage * Math.Sin(angleRadian)); i++)
             //{
