@@ -140,7 +140,7 @@ namespace Pb_Scientifique_Info
             if (this.hauteurImage % 4 == 2) coefHauteur = 2;
             if (this.hauteurImage % 4 == 1) coefHauteur = 3;
                                                                     //début recopiage header + header info
-            byte[] nouveauFichier = new byte[this.tailleFichier + coefHauteur * this.largeurImage + coefLargeur * this.hauteurImage];
+            byte[] nouveauFichier = new byte[this.tailleFichier + coefHauteur * (this.largeurImage + coefLargeur) *3 + coefLargeur * this.hauteurImage *3];
             nouveauFichier[0] = Convert.ToByte(66);
             nouveauFichier[1] = Convert.ToByte(77);
             byte[] tailleFichierEndian = Convert_Int_To_Endian(this.tailleFichier);
@@ -331,9 +331,9 @@ namespace Pb_Scientifique_Info
             Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
             for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);              //enlever la ligne quand la fct sera finie (nan il faut la garder c'est important !)
 
-            for(int i = 0; i < Math.Abs(Math.Cos(angleRadian) * this.hauteurImage); i++)                    //grisage coin haut gauche
+            for(int i = 0; i < Math.Abs(Math.Cos(angleRadian) * this.hauteurImage - 1); i++)                    //grisage coin haut gauche
             {
-                for(int j = 0; j < (int)i*Math.Abs(Math.Tan(angleRadian)); j++)
+                for(int j = 0; j < (int)i*Math.Abs(Math.Tan(angleRadian)) ; j++)
                 {
                     newImage[i + (int)(Math.Abs(Math.Sin(angleRadian) * this.largeurImage)), j].R = (byte)128;
                     newImage[i + (int)Math.Abs(Math.Sin(angleRadian) * this.largeurImage), j].G = (byte)128;
@@ -350,6 +350,10 @@ namespace Pb_Scientifique_Info
                     newImage[i, j].G = (byte)128;
                 }
             }
+            newImage[200, 200].R = (byte)255;
+            newImage[300, 200].R = (byte)255;
+            newImage[200, 250].R = (byte)255;
+
 
             /*int x = 0;
             int y = 0;
