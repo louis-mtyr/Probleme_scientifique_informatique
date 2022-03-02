@@ -76,14 +76,14 @@ namespace Pb_Scientifique_Info
 
 
                 /*Console.WriteLine("Header :");
-                for (int i = 0; i < 14; i++) Console.Write(testRotation.FichierComplet[i] + " ");
+                for (int i = 0; i < 14; i++) Console.Write(test.FichierComplet[i] + " ");
                 Console.WriteLine("\n\nHeader Info :");
-                for (int i = 14; i < 54; i++) Console.Write(testRotation.FichierComplet[i] + " ");
+                for (int i = 14; i < 54; i++) Console.Write(test.FichierComplet[i] + " ");
                 Console.WriteLine("\n\nImage :");
-                for (int i = 54; i < testRotation.FichierComplet.Length; i += testRotation.LargeurImage*3)
+                for (int i = 54; i < test.FichierComplet.Length; i += test.LargeurImage*3)
                 {
-                    for (int j = i; j < i + testRotation.LargeurImage*3; j++)
-                        Console.Write(testRotation.FichierComplet[j] + " ");
+                    for (int j = i; j < i + test.LargeurImage*3; j++)
+                        Console.Write(test.FichierComplet[j] + " ");
                     Console.WriteLine();
                 }*/
             }
