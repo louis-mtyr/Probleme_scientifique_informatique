@@ -19,7 +19,7 @@ namespace Pb_Scientifique_Info
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("lac.bmp");
+            MyImage test = new MyImage("coco.bmp");
 
             if (test.TypeImage == "BitMap")
             {
@@ -69,21 +69,37 @@ namespace Pb_Scientifique_Info
                 //MyImage testRotation = test.Rotation(angle);
                 //testRotation.From_Image_To_File("testRotation.bmp");
 
-                MyImage testDetectionContours = test.DetectionContours();
-                testDetectionContours.From_Image_To_File("testDetectionContours.bmp");
-
-                
-
                 /*Console.WriteLine("Veuillez choisir un angle de rotation vers la droite :");        //rotation
                 int angle = Convert.ToInt32(Console.ReadLine());
                 MyImage testRotation = test.Rotation(angle);
                 testRotation.From_Image_To_File("testRotation.bmp");*/
+
+                MyImage testDetectionContours = test.DetectionContours();
+                testDetectionContours.From_Image_To_File("testDetectionContours.bmp");
 
                 MyImage testFlou = test.Flou();
                 testFlou.From_Image_To_File("testFlou.bmp");
 
                 MyImage testPsychedelique = test.Psychedelique();
                 testPsychedelique.From_Image_To_File("testPsychedelique.bmp");
+
+                MyImage testAugmentationContraste = test.AugmentationContraste();
+                testAugmentationContraste.From_Image_To_File("testAugmentationContraste.bmp");
+
+                MyImage testRenforcementBordsVertical = test.RenforcementBordsVertical();
+                testRenforcementBordsVertical.From_Image_To_File("testRenforcementBords.bmp");
+
+                MyImage testRenforcementBordsHorizontal = test.RenforcementBordsHorizontal();
+                testRenforcementBordsHorizontal.From_Image_To_File("testRenforcementBords2.bmp");
+
+                MyImage testRepoussage = test.Repoussage();
+                testRepoussage.From_Image_To_File("testRepoussage.bmp");
+
+                MyImage testFiltreSobel = test.FiltreSobel();
+                testFiltreSobel.From_Image_To_File("testFiltreSobel.bmp");
+
+                MyImage testJSP = test.ConvolutionAleatoire();
+                testJSP.From_Image_To_File("testConvolutionAleatoire.bmp");
 
                 /*Console.WriteLine("Header :");
                 for (int i = 0; i < 14; i++) Console.Write(test.FichierComplet[i] + " ");
