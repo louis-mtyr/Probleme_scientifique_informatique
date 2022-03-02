@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Méric Lallement\\Desktop\\Cours ESILV\\ESILV A2\\PSI\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {}
+    "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Méric Lallement\\Desktop\\Cours ESILV\\ESILV A2\\PSI\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {
+    "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Méric Lallement\\Desktop\\Cours ESILV\\ESILV A2\\PSI\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
+        "projectUniqueName": "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
         "projectName": "Pb_Scientifique_Info",
-        "projectPath": "C:\\Users\\Méric Lallement\\Desktop\\Cours ESILV\\ESILV A2\\PSI\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
-        "packagesPath": "C:\\Users\\Méric Lallement\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Méric Lallement\\Desktop\\Cours ESILV\\ESILV A2\\PSI\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\obj\\",
+        "projectPath": "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\Pb_Scientifique_Info.csproj",
+        "packagesPath": "C:\\Users\\Louis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Louis\\Desktop\\travail\\A2 - Info\\Problème scientifique informatique\\Projet git\\Pb_Scientifique_Info\\Pb_Scientifique_Info\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Méric Lallement\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Louis\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -49,18 +49,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[3.1.13, 3.1.13]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

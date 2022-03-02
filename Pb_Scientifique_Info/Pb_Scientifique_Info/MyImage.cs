@@ -512,5 +512,469 @@ namespace Pb_Scientifique_Info
             MyImage imageAgrandie = new MyImage("BitMap", newTaille, newTailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
             return imageAgrandie;
         }
+
+        public MyImage Flou()
+        {
+            Pixel[,] newImage = new Pixel[this.hauteurImage, this.largeurImage];
+            int calculR = 0;
+            int calculG = 0;
+            int calculB = 0;
+            int[,] matConvolution = { { 2, 2, 2 }, { 2, 2, 2 }, { 2, 2, 2 } };
+            for (int i = 0; i < this.hauteurImage; i++) for (int j = 0; j < this.largeurImage; j++) newImage[i, j] = new Pixel(0, 0, 0);
+
+            for (int i = 1; i < this.hauteurImage - 1; i++)                           //coeur de l'image
+            {
+                for (int j = 1; j < this.largeurImage - 1; j++)
+                {
+                    for (int x = -1; x <= 1; x++)
+                    {
+                        for (int y = -1; y <= 1; y++)
+                        {
+                            calculR += this.image[i + x, j + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[i + x, j + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[i + x, j + y].B * matConvolution[x + 1, y + 1];
+                        }
+                    }
+                    newImage[i, j].R = (byte)(calculR / 18);
+                    newImage[i, j].G = (byte)(calculG / 18);
+                    newImage[i, j].B = (byte)(calculB / 18);
+                    calculR = 0;
+                    calculG = 0;
+                    calculB = 0;
+                }
+            }
+
+            for (int i = 1; i < this.hauteurImage - 1; i++)                           //bord gauche
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        calculR += this.image[i + x, Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[i + x, Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[i + x, Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+                newImage[i, 0].R = (byte)(calculR / 18);
+                newImage[i, 0].G = (byte)(calculG / 18);
+                newImage[i, 0].B = (byte)(calculB / 18);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+
+            for (int i = 1; i < this.hauteurImage - 1; i++)                           //bord droit
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        if (y != 1)
+                        {
+                            calculR += this.image[i + x, this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[i + x, this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[i + x, this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                        }
+                        else
+                        {
+                            calculR += this.image[i + x, this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[i + x, this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[i + x, this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                        }
+                    }
+                }
+                newImage[i, this.largeurImage - 1].R = (byte)(calculR / 18);
+                newImage[i, this.largeurImage - 1].G = (byte)(calculG / 18);
+                newImage[i, this.largeurImage - 1].B = (byte)(calculB / 18);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+                                                                                                 //bord bas
+            for (int j = 1; j < this.largeurImage - 1; j++)
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        calculR += this.image[Math.Abs(0 + x), j + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[Math.Abs(0 + x), j + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[Math.Abs(0 + x), j + y].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+                newImage[0, j].R = (byte)(calculR / 18);
+                newImage[0, j].G = (byte)(calculG / 18);
+                newImage[0, j].B = (byte)(calculB / 18);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+                                                                                    //bord haut
+            for (int j = 1; j < this.largeurImage - 1; j++)
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        if (x != 1)
+                        {
+                            calculR += this.image[this.hauteurImage - 1 + x, j + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[this.hauteurImage - 1 + x, j + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[this.hauteurImage - 1 + x, j + y].B * matConvolution[x + 1, y + 1];
+                        }
+                        else
+                        {
+                            calculR += this.image[this.hauteurImage - 1 - x, j + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[this.hauteurImage - 1 - x, j + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[this.hauteurImage - 1 - x, j + y].B * matConvolution[x + 1, y + 1];
+                        }
+                    }
+                }
+                newImage[this.hauteurImage - 1, j].R = (byte)(calculR / 18);
+                newImage[this.hauteurImage - 1, j].G = (byte)(calculG / 18);
+                newImage[this.hauteurImage - 1, j].B = (byte)(calculB / 18);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+
+            for (int x = -1; x <= 1; x++)                       //coin bas gauche
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    calculR += this.image[Math.Abs(0 + x), Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                    calculG += this.image[Math.Abs(0 + x), Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                    calculB += this.image[Math.Abs(0 + x), Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                }
+            }
+            newImage[0, 0].R = (byte)(calculR / 18);
+            newImage[0, 0].G = (byte)(calculG / 18);
+            newImage[0, 0].B = (byte)(calculB / 18);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            for (int x = -1; x <= 1; x++)                       //coin bas droite
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (y != 1)
+                    {
+                        calculR += this.image[Math.Abs(0 + x), this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[Math.Abs(0 + x), this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[Math.Abs(0 + x), this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else
+                    {
+                        calculR += this.image[Math.Abs(0 + x), this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[Math.Abs(0 + x), this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[Math.Abs(0 + x), this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+            }
+            newImage[0, this.largeurImage-1].R = (byte)(calculR / 18);
+            newImage[0, this.largeurImage-1].G = (byte)(calculG / 18);
+            newImage[0, this.largeurImage-1].B = (byte)(calculB / 18);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            for (int x = -1; x <= 1; x++)                       //coin haut gauche
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (x != 1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 + x, Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 + x, Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 + x, Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                    }
+                    else
+                    {
+                        calculR += this.image[this.hauteurImage - 1 - x, Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 - x, Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 - x, Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+            }
+            newImage[this.hauteurImage-1, 0].R = (byte)(calculR / 18);
+            newImage[this.hauteurImage-1, 0].G = (byte)(calculG / 18);
+            newImage[this.hauteurImage-1, 0].B = (byte)(calculB / 18);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            for (int x = -1; x <= 1; x++)                       //coin haut droite
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (x != 1 && y != 1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else if (x==1 && y!=1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else if (x!=1 && y==1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else if (x==1 && y==1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+            }
+            newImage[this.hauteurImage - 1, this.largeurImage-1].R = (byte)(calculR / 18);
+            newImage[this.hauteurImage - 1, this.largeurImage-1].G = (byte)(calculG / 18);
+            newImage[this.hauteurImage - 1, this.largeurImage-1].B = (byte)(calculB / 18);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            MyImage nouvelleImage = new MyImage("BitMap", this.tailleFichier, this.tailleOffset, this.hauteurImage, this.largeurImage, this.nbBitsCouleur, newImage);
+            return nouvelleImage;
+        }
+
+        public MyImage Psychedelique()
+        {
+            Pixel[,] newImage = new Pixel[this.hauteurImage, this.largeurImage];
+            int calculR = 0;
+            int calculG = 0;
+            int calculB = 0;
+            int[,] matConvolution = { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
+            for (int i = 0; i < this.hauteurImage; i++) for (int j = 0; j < this.largeurImage; j++) newImage[i, j] = new Pixel(0, 0, 0);
+
+            for (int i = 1; i < this.hauteurImage - 1; i++)                           //coeur de l'image
+            {
+                for (int j = 1; j < this.largeurImage - 1; j++)
+                {
+                    for (int x = -1; x <= 1; x++)
+                    {
+                        for (int y = -1; y <= 1; y++)
+                        {
+                            calculR += this.image[i + x, j + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[i + x, j + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[i + x, j + y].B * matConvolution[x + 1, y + 1];
+                        }
+                    }
+                    newImage[i, j].R = (byte)(calculR);
+                    newImage[i, j].G = (byte)(calculG);
+                    newImage[i, j].B = (byte)(calculB);
+                    calculR = 0;
+                    calculG = 0;
+                    calculB = 0;
+                }
+            }
+
+            for (int i = 1; i < this.hauteurImage - 1; i++)                           //bord gauche
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        calculR += this.image[i + x, Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[i + x, Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[i + x, Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+                newImage[i, 0].R = (byte)(calculR);
+                newImage[i, 0].G = (byte)(calculG);
+                newImage[i, 0].B = (byte)(calculB);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+
+            for (int i = 1; i < this.hauteurImage - 1; i++)                           //bord droit
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        if (y != 1)
+                        {
+                            calculR += this.image[i + x, this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[i + x, this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[i + x, this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                        }
+                        else
+                        {
+                            calculR += this.image[i + x, this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[i + x, this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[i + x, this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                        }
+                    }
+                }
+                newImage[i, this.largeurImage - 1].R = (byte)(calculR);
+                newImage[i, this.largeurImage - 1].G = (byte)(calculG);
+                newImage[i, this.largeurImage - 1].B = (byte)(calculB);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+            //bord bas
+            for (int j = 1; j < this.largeurImage - 1; j++)
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        calculR += this.image[Math.Abs(0 + x), j + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[Math.Abs(0 + x), j + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[Math.Abs(0 + x), j + y].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+                newImage[0, j].R = (byte)(calculR);
+                newImage[0, j].G = (byte)(calculG);
+                newImage[0, j].B = (byte)(calculB);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+            //bord haut
+            for (int j = 1; j < this.largeurImage - 1; j++)
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        if (x != 1)
+                        {
+                            calculR += this.image[this.hauteurImage - 1 + x, j + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[this.hauteurImage - 1 + x, j + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[this.hauteurImage - 1 + x, j + y].B * matConvolution[x + 1, y + 1];
+                        }
+                        else
+                        {
+                            calculR += this.image[this.hauteurImage - 1 - x, j + y].R * matConvolution[x + 1, y + 1];
+                            calculG += this.image[this.hauteurImage - 1 - x, j + y].G * matConvolution[x + 1, y + 1];
+                            calculB += this.image[this.hauteurImage - 1 - x, j + y].B * matConvolution[x + 1, y + 1];
+                        }
+                    }
+                }
+                newImage[this.hauteurImage - 1, j].R = (byte)(calculR);
+                newImage[this.hauteurImage - 1, j].G = (byte)(calculG);
+                newImage[this.hauteurImage - 1, j].B = (byte)(calculB);
+                calculR = 0;
+                calculG = 0;
+                calculB = 0;
+            }
+
+            for (int x = -1; x <= 1; x++)                       //coin bas gauche
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    calculR += this.image[Math.Abs(0 + x), Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                    calculG += this.image[Math.Abs(0 + x), Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                    calculB += this.image[Math.Abs(0 + x), Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                }
+            }
+            newImage[0, 0].R = (byte)(calculR);
+            newImage[0, 0].G = (byte)(calculG);
+            newImage[0, 0].B = (byte)(calculB);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            for (int x = -1; x <= 1; x++)                       //coin bas droite
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (y != 1)
+                    {
+                        calculR += this.image[Math.Abs(0 + x), this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[Math.Abs(0 + x), this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[Math.Abs(0 + x), this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else
+                    {
+                        calculR += this.image[Math.Abs(0 + x), this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[Math.Abs(0 + x), this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[Math.Abs(0 + x), this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+            }
+            newImage[0, this.largeurImage - 1].R = (byte)(calculR);
+            newImage[0, this.largeurImage - 1].G = (byte)(calculG);
+            newImage[0, this.largeurImage - 1].B = (byte)(calculB);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            for (int x = -1; x <= 1; x++)                       //coin haut gauche
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (x != 1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 + x, Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 + x, Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 + x, Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                    }
+                    else
+                    {
+                        calculR += this.image[this.hauteurImage - 1 - x, Math.Abs(0 + y)].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 - x, Math.Abs(0 + y)].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 - x, Math.Abs(0 + y)].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+            }
+            newImage[this.hauteurImage - 1, 0].R = (byte)(calculR);
+            newImage[this.hauteurImage - 1, 0].G = (byte)(calculG);
+            newImage[this.hauteurImage - 1, 0].B = (byte)(calculB);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            for (int x = -1; x <= 1; x++)                       //coin haut droite
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (x != 1 && y != 1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else if (x == 1 && y != 1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 + y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 + y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 + y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else if (x != 1 && y == 1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 + x, this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                    }
+                    else if (x == 1 && y == 1)
+                    {
+                        calculR += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 - y].R * matConvolution[x + 1, y + 1];
+                        calculG += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 - y].G * matConvolution[x + 1, y + 1];
+                        calculB += this.image[this.hauteurImage - 1 - x, this.largeurImage - 1 - y].B * matConvolution[x + 1, y + 1];
+                    }
+                }
+            }
+            newImage[this.hauteurImage - 1, this.largeurImage - 1].R = (byte)(calculR);
+            newImage[this.hauteurImage - 1, this.largeurImage - 1].G = (byte)(calculG);
+            newImage[this.hauteurImage - 1, this.largeurImage - 1].B = (byte)(calculB);
+            calculR = 0;
+            calculG = 0;
+            calculB = 0;
+
+            MyImage nouvelleImage = new MyImage("BitMap", this.tailleFichier, this.tailleOffset, this.hauteurImage, this.largeurImage, this.nbBitsCouleur, newImage);
+            return nouvelleImage;
+        }
     }
 }

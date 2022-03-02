@@ -64,10 +64,16 @@ namespace Pb_Scientifique_Info
                 if (testReduit != null) testReduit.From_Image_To_File("testReduit.bmp");
                 else Console.WriteLine("coefficient de réduction impossible");
 
-                Console.WriteLine("Veuillez choisir un angle de rotation vers la droite :");
+                /*Console.WriteLine("Veuillez choisir un angle de rotation vers la droite :");        //rotation
                 int angle = Convert.ToInt32(Console.ReadLine());
                 MyImage testRotation = test.Rotation(angle);
-                testRotation.From_Image_To_File("testRotation.bmp");
+                testRotation.From_Image_To_File("testRotation.bmp");*/
+
+                MyImage testFlou = test.Flou();
+                testFlou.From_Image_To_File("testFlou.bmp");
+
+                MyImage testPsychedelique = test.Psychedelique();
+                testPsychedelique.From_Image_To_File("testPsychedelique.bmp");
 
                 /*Console.WriteLine("Header :");
                 for (int i = 0; i < 14; i++) Console.Write(test.FichierComplet[i] + " ");
