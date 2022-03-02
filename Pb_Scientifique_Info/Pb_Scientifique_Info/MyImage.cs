@@ -421,5 +421,60 @@ namespace Pb_Scientifique_Info
             MyImage imageAgrandie = new MyImage("BitMap", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
             return imageAgrandie;
         }
+
+        public MyImage DetectionContours()
+        {
+            Pixel[,] newImage = new Pixel[this.hauteurImage, this.LargeurImage];
+            int[,] matConvo = new int[,] { { -1, -1, -1 }, { -1, 8, -1 }, { -1, -1, -1 } };
+
+            for (int i = 0; i < newImage.GetLength(0); i++)
+                for (int j = 0; j < newImage.GetLength(1); j++)
+                    newImage[i, j] = new Pixel(0, 0, 0);                        //à optimiser qd fct finie
+
+            for (int i = 1; i < newImage.GetLength(0) - 1; i++)
+            {
+                for (int j = 1; j < newImage.GetLength(1) - 1; j++)
+                {
+                    int sommeR = 0;
+                    int sommeB = 0;
+                    int sommeG = 0;
+                    for (int k = 0; k < 3; k++)
+                    {
+                        for (int l = 0; l < 3; l++)
+                        {
+                            sommeR += this.image[i - 1 + k, j - 1 + l].R * matConvo[k, l];
+                            sommeB += this.image[i - 1 + k, j - 1 + l].B * matConvo[k, l];
+                            sommeG += this.image[i - 1 + k, j - 1 + l].G * matConvo[k, l];
+                        }
+                    }
+                    if ((sommeR + sommeB + sommeG) / 3 > 255 )
+                    {
+                        newImage[i, j].R = 255;
+                        newImage[i, j].B = 255;
+                        newImage[i, j].G = 255;
+                    }
+                    else if((sommeR + sommeB + sommeG) / 3 <0)
+                    {
+                        newImage[i, j].R = 0;
+                        newImage[i, j].B = 0;
+                        newImage[i, j].G = 0;
+                    }
+                    else
+                    {
+                        newImage[i, j].R = (byte)((sommeR + sommeB + sommeG) / 3);
+                        newImage[i, j].B = (byte)((sommeR + sommeB + sommeG) / 3);
+                        newImage[i, j].G = (byte)((sommeR + sommeB + sommeG) / 3);
+                    }
+
+
+
+                }
+            }
+            MyImage areturn = new MyImage("BitMap", this.TailleFichier, this.TailleOffset, this.HauteurImage, this.LargeurImage, this.NbBitsCouleur, newImage);
+            return areturn;
+
+        }
+
+         
     }
 }
