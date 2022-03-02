@@ -447,35 +447,31 @@ namespace Pb_Scientifique_Info
         }
 
         public MyImage Reduire(int coefHauteur, int coefLargeur)                    //return l'image réduite -coefHauteur * coefLargeur- fois
-        {                                                   //Attention : ne return l'image que si -coef- est un diviseur commun de hauteurImage ou largeurImage
-            if (hauteurImage % coefHauteur == 0 && largeurImage % coefLargeur == 0)
-            {
-                int newTaille = (this.hauteurImage / coefHauteur) * (this.LargeurImage / coefLargeur) * 3 + 54;
-                int newHauteur = this.hauteurImage / coefHauteur;
-                int newLargeur = this.largeurImage / coefLargeur;
-                int newTailleOffset = newHauteur * newLargeur * 3;
-                Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
-                for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);
+        {
+            int newTaille = (this.hauteurImage / coefHauteur) * (this.LargeurImage / coefLargeur) * 3 + 54;
+            int newHauteur = this.hauteurImage / coefHauteur;
+            int newLargeur = this.largeurImage / coefLargeur;
+            int newTailleOffset = newHauteur * newLargeur * 3;
+            Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
+            for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);
 
-                int x = 0;
-                int y = 0;
-                for (int i = 0; i < hauteurImage; i += coefHauteur)
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < hauteurImage - coefHauteur + 1; i += coefHauteur)
+            {
+                for (int j = 0; j < largeurImage - coefLargeur + 1; j += coefLargeur)
                 {
-                    for (int j = 0; j < largeurImage; j += coefLargeur)
+                    newImage[x, y] = new Pixel(image[i, j].R, image[i, j].G, image[i, j].B);
+                    if (y < newLargeur - 1) y++;
+                    else
                     {
-                        newImage[x, y] = new Pixel(image[i, j].R, image[i, j].G, image[i, j].B);
-                        if (y < newLargeur - 1) y++;
-                        else
-                        {
-                            y = 0;
-                            x++;
-                        }
+                        y = 0;
+                        x++;
                     }
                 }
-                MyImage imageReduite = new MyImage("BitMap", newTaille, newTailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
-                return imageReduite;
             }
-            else return null;
+            MyImage imageReduite = new MyImage("BitMap", newTaille, newTailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
+            return imageReduite;
         }
 
         public MyImage Agrandir(int coefHauteur, int coefLargeur)                       //return l'image aggrandie -coefHauteur * coefLargeur- fois

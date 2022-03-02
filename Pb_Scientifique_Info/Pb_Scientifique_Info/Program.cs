@@ -19,7 +19,7 @@ namespace Pb_Scientifique_Info
 
         static void Main(string[] args)
         {
-            MyImage test = new MyImage("coco.bmp");
+            MyImage test = new MyImage("tigre.bmp");
 
             if (test.TypeImage == "BitMap")
             {
@@ -49,25 +49,20 @@ namespace Pb_Scientifique_Info
                 MyImage testMiroirVertical = test.MiroirVertical();
                 testMiroirVertical.From_Image_To_File("testMiroir2.bmp");
 
-                //Console.WriteLine("Veuillez choisir un coefficient d'agrandissement (hauteur) :");
-                //int coefHauteurAgrandi = Convert.ToInt32(Console.ReadLine());
-                //Console.WriteLine("Veuillez choisir un coefficient d'agrandissement (largeur) :");
-                //int coefLargeurAgrandi = Convert.ToInt32(Console.ReadLine());
-                //MyImage testAgrandi = test.Agrandir(coefHauteurAgrandi, coefLargeurAgrandi);
-                //testAgrandi.From_Image_To_File("testAgrandi.bmp");
+                Console.WriteLine("Veuillez choisir un coefficient d'agrandissement (hauteur) :");
+                int coefHauteurAgrandi = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Veuillez choisir un coefficient d'agrandissement (largeur) :");
+                int coefLargeurAgrandi = Convert.ToInt32(Console.ReadLine());
+                MyImage testAgrandi = test.Agrandir(coefHauteurAgrandi, coefLargeurAgrandi);
+                testAgrandi.From_Image_To_File("testAgrandi.bmp");
 
-                //Console.WriteLine("Veuillez choisir un coefficient de réduction (hauteur) :");
-                //int coefHauteurReduit = Convert.ToInt32(Console.ReadLine());
-                //Console.WriteLine("Veuillez choisir un coefficient de réduction (largeur) :");
-                //int coefLargeurReduit = Convert.ToInt32(Console.ReadLine());
-                //MyImage testReduit = test.Reduire(coefHauteurReduit, coefLargeurReduit);
-                //if (testReduit != null) testReduit.From_Image_To_File("testReduit.bmp");
-                //else Console.WriteLine("coefficient de réduction impossible");
-
-                //Console.WriteLine("Veuillez choisir un angle de rotation vers la droite :");
-                //int angle = Convert.ToInt32(Console.ReadLine());
-                //MyImage testRotation = test.Rotation(angle);
-                //testRotation.From_Image_To_File("testRotation.bmp");
+                Console.WriteLine("Veuillez choisir un coefficient de réduction (hauteur) :");
+                int coefHauteurReduit = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Veuillez choisir un coefficient de réduction (largeur) :");
+                int coefLargeurReduit = Convert.ToInt32(Console.ReadLine());
+                MyImage testReduit = test.Reduire(coefHauteurReduit, coefLargeurReduit);
+                if (testReduit != null) testReduit.From_Image_To_File("testReduit.bmp");
+                else Console.WriteLine("coefficient de réduction impossible");
 
                 /*Console.WriteLine("Veuillez choisir un angle de rotation vers la droite :");        //rotation
                 int angle = Convert.ToInt32(Console.ReadLine());
