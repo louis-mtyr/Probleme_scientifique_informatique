@@ -287,19 +287,35 @@ namespace Pb_Scientifique_Info
         {
             int angleDegre = angleDonne % 360;
             double angleRadian = (double)angleDegre * Math.PI / 180;
-            int newHauteur = (int)(this.hauteurImage * Math.Cos(angleRadian) + this.largeurImage * Math.Sin(angleRadian));
-            int newLargeur = (int)(this.largeurImage * Math.Cos(angleRadian) + this.hauteurImage * Math.Cos((Math.PI / 2) - angleRadian));  //ALEDDDDDDD
+            int newHauteur = (int)(this.hauteurImage * Math.Abs(Math.Cos(angleRadian))) + (int)(this.largeurImage * Math.Abs(Math.Sin(angleRadian)));
+            int newLargeur = (int)(this.largeurImage * Math.Abs(Math.Cos(angleRadian))) + (int)(this.hauteurImage * Math.Abs(Math.Sin(angleRadian)));  //ALEDDDDDDD
             int newTaille = newHauteur * newLargeur * 3 + 54;                                                                               //pour l'instant je cherche à créer les bords mais aled enfait
             Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
-            for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(0, 0, 0);
+            for (int i = 0; i < newHauteur; i++) for (int j = 0; j < newLargeur; j++) newImage[i, j] = new Pixel(255, 255, 255);
 
-            for (int i=0; i < (int)(this.largeurImage * Math.Sin(angleRadian)); i++)
+            int x = 0;
+            int y = 0;
+            for (int i=(int)(this.largeurImage*Math.Sin(angleRadian)); i < newHauteur; i++)
+            {
+                for (int j=0; j<newLargeur; j++)
+                {
+                    newImage[i, j] = this.Image[x, y];
+                    if (y < this.largeurImage - 1) y++;
+                    else
+                    {
+                        y = 0;
+                        x++;
+                    }
+                }
+            }
+
+            /*for (int i=0; i < (int)(this.largeurImage * Math.Sin(angleRadian)); i++)
             {
                 for (int j=0; j < (int)(this.largeurImage * Math.Cos(angleRadian))-i; j++)
                 {
-                    newImage[i, j].R = (byte)128;
-                    newImage[i, j].G = (byte)128;
-                    newImage[i, j].B = (byte)128;
+                    newImage[i, j].R = (byte)255;
+                    newImage[i, j].G = (byte)255;
+                    newImage[i, j].B = (byte)255;
                 }
             }
 
@@ -307,9 +323,9 @@ namespace Pb_Scientifique_Info
             {
                 for (int j = newLargeur - 1; j >= (int)(this.hauteurImage * Math.Cos((Math.PI / 2) - angleRadian) + 1) + i; j--)
                 {
-                    newImage[i, j].R = (byte)128;
-                    newImage[i, j].G = (byte)128;
-                    newImage[i, j].B = (byte)128;
+                    newImage[i, j].R = (byte)255;
+                    newImage[i, j].G = (byte)255;
+                    newImage[i, j].B = (byte)255;
                 }
             }
 
@@ -317,9 +333,9 @@ namespace Pb_Scientifique_Info
             {
                 for (int j = 0; j < i - (int)(this.largeurImage * Math.Cos(angleRadian)); j++)
                 {
-                    newImage[i, j].R = (byte)128;
-                    newImage[i, j].G = (byte)128;
-                    newImage[i, j].B = (byte)128;
+                    newImage[i, j].R = (byte)255;
+                    newImage[i, j].G = (byte)255;
+                    newImage[i, j].B = (byte)255;
                 }
             }
 
@@ -327,11 +343,11 @@ namespace Pb_Scientifique_Info
             {
                 for (int j = newLargeur - 1; j >= - i + newHauteur + (int)(this.largeurImage * Math.Sin(angleRadian)); j--)
                 {
-                    newImage[i, j].R = (byte)128;
-                    newImage[i, j].G = (byte)128;
-                    newImage[i, j].B = (byte)128;
+                    newImage[i, j].R = (byte)255;
+                    newImage[i, j].G = (byte)255;
+                    newImage[i, j].B = (byte)255;
                 }
-            }
+            }*/
 
             MyImage nouvelleImage = new MyImage("BitMap", newTaille, this.TailleOffset, newHauteur, newLargeur, this.NbBitsCouleur, newImage);
             return nouvelleImage;
@@ -339,7 +355,7 @@ namespace Pb_Scientifique_Info
 
         public MyImage Reduire(int coefHauteur, int coefLargeur)                    //return l'image réduite -coefHauteur * coefLargeur- fois
         {                                                   //Attention : ne return l'image que si -coef- est un diviseur commun de hauteurImage ou largeurImage
-            if (hauteurImage % coefHauteur == 0 && largeurImage % coefLargeur == 0)
+            if (coefHauteur !=0 && coefLargeur != 0 && hauteurImage % coefHauteur == 0 && largeurImage % coefLargeur == 0)
             {
                 int newTaille = (this.hauteurImage / coefHauteur) * (this.LargeurImage / coefLargeur) * 3 + 54;
                 int newHauteur = this.hauteurImage / coefHauteur;
